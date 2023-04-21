@@ -1,0 +1,236 @@
+{
+  "app:delete-file": [
+    {
+      "key": "Delete",
+      "modifiers": [
+        "Shift"
+      ]
+    }
+  ],
+  "app:go-back": [
+    {
+      "key": "ArrowLeft",
+      "modifiers": [
+        "Mod",
+        "Alt"
+      ]
+    },
+    {
+      "key": "`",
+      "modifiers": [
+        "Alt"
+      ]
+    }
+  ],
+  "app:go-forward": [
+    {
+      "key": "ArrowRight",
+      "modifiers": [
+        "Mod",
+        "Alt"
+      ]
+    },
+    {
+      "key": "1",
+      "modifiers": [
+        "Alt"
+      ]
+    }
+  ],
+  "app:reload": [
+    {
+      "key": "R",
+      "modifiers": [
+        "Alt"
+      ]
+    }
+  ],
+  "app:toggle-left-sidebar": [
+    {
+      "key": "D",
+      "modifiers": [
+        "Alt"
+      ]
+    }
+  ],
+  "command-palette:open": [
+    {
+      "key": "P",
+      "modifiers": [
+        "Mod"
+      ]
+    },
+    {
+      "key": "P",
+      "modifiers": [
+        "Alt"
+      ]
+    }
+  ],
+  "editor:insert-codeblock": [
+    {
+      "key": "X",
+      "modifiers": [
+        "Alt"
+      ]
+    }
+  ],
+  "editor:set-heading": [
+    {
+      "key": "Z",
+      "modifiers": [
+        "Alt"
+      ]
+    }
+  ],
+  "editor:set-heading-3": [
+    {
+      "key": "3",
+      "modifiers": [
+        "Alt"
+      ]
+    }
+  ],
+  "editor:set-heading-4": [
+    {
+      "key": "4",
+      "modifiers": [
+        "Alt"
+      ]
+    }
+  ],
+  "editor:set-heading-5": [
+    {
+      "key": "5",
+      "modifiers": [
+        "Alt"
+      ]
+    }
+  ],
+  "editor:swap-line-down": [
+    {
+      "key": "ArrowDown",
+      "modifiers": [
+        "Alt"
+      ]
+    }
+  ],
+  "editor:swap-line-up": [
+    {
+      "key": "ArrowUp",
+      "modifiers": [
+        "Alt"
+      ]
+    }
+  ],
+  "editor:toggle-checklist-status": [
+    {
+      "key": "l",
+      "modifiers": [
+        "Mod"
+      ]
+    }
+  ],
+  "file-explorer:open": [
+    {
+      "key": "E",
+      "modifiers": [
+        "Alt"
+      ]
+    }
+  ],
+  "global-search:open": [
+    {
+      "key": "F",
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ]
+    },
+    {
+      "key": "S",
+      "modifiers": [
+        "Alt"
+      ]
+    }
+  ],
+  "markdown:toggle-preview": [],
+  "switcher:open": [
+    {
+      "key": "O",
+      "modifiers": [
+        "Mod"
+      ]
+    },
+    {
+      "key": "O",
+      "modifiers": [
+        "Alt"
+      ]
+    }
+  ],
+  "workspace:new-tab": [
+    {
+      "key": "T",
+      "modifiers": [
+        "Mod"
+      ]
+    }
+  ],
+  "workspace:next-tab": [
+    {
+      "key": "Tab",
+      "modifiers": [
+        "Ctrl"
+      ]
+    },
+    {
+      "key": "PageDown",
+      "modifiers": [
+        "Ctrl"
+      ]
+    },
+    {
+      "key": "W",
+      "modifiers": [
+        "Alt"
+      ]
+    }
+  ],
+  "workspace:previous-tab": [
+    {
+      "key": "Tab",
+      "modifiers": [
+        "Ctrl",
+        "Shift"
+      ]
+    },
+    {
+      "key": "PageUp",
+      "modifiers": [
+        "Ctrl"
+      ]
+    },
+    {
+      "key": "Q",
+      "modifiers": [
+        "Alt"
+      ]
+    }
+  ],
+  "workspace:undo-close-pane": [
+    {
+      "key": "T",
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ]
+    },
+    {
+      "key": "2",
+      "modifiers": [
+        "Alt"
+      ]
+    }
+  ]
+}

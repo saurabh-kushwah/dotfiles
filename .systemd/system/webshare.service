@@ -1,0 +1,15 @@
+[Unit]
+Description=Start Python File WebServer
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 -m http.server 80
+WorkingDirectory=/home/saurabh
+#User=root
+#Group=root
+Restart=always
+KillSignal=SIGQUIT
+
+[Install]
+WantedBy=multi-user.target

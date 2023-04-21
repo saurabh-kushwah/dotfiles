@@ -1,0 +1,79 @@
+#!/bin/bash
+
+ENVS=()
+WATCH_FILES=()
+RUN_COMMAND=""
+
+PANE_ID=""
+WINDOW_ID=""
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -e|--env)
+      ENVS+=("-e $2")
+      shift
+      shift
+      ;;
+    -f|--file)
+      WATCH_FILES+=("$2")
+      shift
+      shift
+      ;;
+    -p|--pane-id)
+      PANE_ID=("$2")
+      shift
+      shift
+      ;;
+    -w|--window-id)
+      WINDOW_ID=("$2")
+      shift
+      shift
+      ;;
+    *)
+      RUN_COMMAND+=" $1"
+      shift
+      ;;
+  esac
+done
+
+RUN_COMMAND=$(echo "${RUN_COMMAND}" | xargs)
+
+if [ ! -z "${WINDOW_ID}" ]; then
+  PANE_ID=$(tmux list-panes -t ${WINDOW_ID} -F '#{pane_id}')
+fi
+
+if (( ${#WATCH_FILES[@]} == 0 )) || [[ -z "${RUN_COMMAND}" ]]; then
+  echo "Usage: fs-watch [-f file ...] command"
+  exit
+fi
+
+CURRENT_WINDOW_INDEX=$(tmux display-message -p "#{window_index}")
+
+if [ -z "$PANE_ID" ]; then
+
+  PANE_ID=$(tmux new-window -d -c ${PWD} ${ENVS[@]} -P -F "#{pane_id}")
+
+  function cleanup () { tmux kill-pane -t ${PANE_ID} ; }
+  trap cleanup exit
+
+else
+
+  for ENV in "${ENVS[@]}"; do
+    tmux send-keys -t ${PANE_ID} "export ${ENV//-e /}" Enter
+  done
+
+  tmux send-keys -t ${PANE_ID} clear Enter
+fi
+
+tmux send-keys -t ${PANE_ID} \
+  "function cleanup () { tmux kill-pane -t ${TMUX_PANE} ; }" Enter \
+  "trap cleanup exit" Enter \
+  "clear" Enter
+
+tmux swap-pane -s ${PANE_ID} -t ${TMUX_PANE}
+tmux select-window -t ":${CURRENT_WINDOW_INDEX}"
+tmux last-pane
+
+while inotifywait -r -qqe close_write "${WATCH_FILES[@]}"; do
+  tmux send-keys -t ${PANE_ID} C-c Enter clear Enter "${RUN_COMMAND}" Enter
+done

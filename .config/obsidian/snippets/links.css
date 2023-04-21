@@ -1,0 +1,13 @@
+.internal-link {
+  text-decoration: none;
+}
+
+.external-link {
+  background: none;
+  padding-right: 0;
+}
+
+.markdown-source-view.mod-cm6 .cm-link .cm-underline,
+.markdown-source-view.mod-cm6 .cm-url .cm-underline {
+  text-decoration-line: none;
+}

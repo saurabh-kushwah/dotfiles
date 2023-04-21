@@ -1,0 +1,10 @@
+#!/usr/bin/env python3
+
+import json, sys, yaml
+
+if len(sys.argv) > 1:
+  descriptor=open(sys.argv[1])
+else:
+  descriptor=sys.stdin
+
+print(json.dumps(yaml.load(descriptor, yaml.Loader), indent=2, sort_keys=True))

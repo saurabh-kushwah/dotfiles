@@ -1,0 +1,17 @@
+services:
+  dynamodb:
+    container_name: dynamodb
+    image: amazon/dynamodb-local
+    ports:
+      - "8000:8000"
+    command: -jar DynamoDBLocal.jar -inMemory -cors '*'
+    networks:
+      - dynamodb
+    restart: unless-stopped
+
+networks:
+  dynamodb:
+    driver: bridge
+
+volumes:
+    dynamodb:

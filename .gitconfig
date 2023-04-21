@@ -1,0 +1,109 @@
+[user]
+	name = saurabh-kushwah
+
+# [url "git@github.com:"]
+#   insteadOf = https://github.com/
+#
+# [url "git@gitlab.com:"]
+#   insteadOf = https://gitlab.com/
+
+[credential]
+	helper = cache --timeout=86400
+
+################################################################################
+
+[alias]
+	tags         = tag -l
+	branches     = branch --all
+	remotes      = remote --verbose
+	whoami       = config user.email
+	contributors = shortlog --summary --numbered
+
+[apply]
+  whitespace       = nowarn
+  ignorewhitespace = change
+
+[push]
+  followTags      = yes
+  autoSetupRemote = true
+  followTags      = true
+  rebase          = true
+
+[pull]
+	rebase = false
+
+[core]
+  # Treat spaces before tabs and all kinds of trailing whitespace as an error
+  # [default] trailing-space: looks for spaces at the end of a line
+  # [default] space-before-tab: looks for spaces before tabs at the beginning of a line
+	autocrlf       = input
+  symlinks       = true
+  ignoreCase     = false
+  hooksPath      = ~/.config/git/hooks
+  excludesFile   = ~/.config/git/ignore
+  attributesFile = ~/.config/git/attributes
+  whitespace     = space-before-tab,-indent-with-non-tab,trailing-space
+
+[grep]
+	lineNumber = true
+
+[init]
+	defaultBranch = master
+
+[commit]
+	verbose = true
+
+[fetch]
+  prune = true
+  parallel = 3
+
+[submodule]
+  fetchJobs = 3
+
+###############################################################################
+
+[color]
+	ui = auto
+
+[color "branch"]
+  branch = "#FFB454"
+
+[color "diff"]
+  old        = "#FF6188"
+  new        = "#A9DC76"
+  meta       = "#FFCC00"
+  frag       = "#3C6A66"
+  whitespace = "#FFFFFF"
+
+[color "status"]
+  added     = "#A9DC76"
+  branch    = "#A9DC76"
+  header    = "#7F848E"
+  rename    = "#3C6A66"
+  changed   = "#FFCC00"
+  deleted   = "#F07178"
+  nobranch  = "#F07178"
+  unmerged  = "#FF6188"
+  untracked = "#F07178"
+
+###############################################################################
+
+# https://lobste.rs/s/dtrkna/#c_ipltmn
+#
+# ~/.gitconfig:
+#   [includeIf "gitdir:~/foo/"]
+#     path = .gitconfig_foo
+
+[include]
+  path = ~/.gitconfig.local
+
+################################################################################
+
+# [filter "gomodreplace"]
+#   clean = rg -U -v 'replace ((?s)\\(.*\\)|.*)'
+
+[advice]
+	addEmptyPathspec = false
+
+[remote "upstream"]
+	tagOpt = --no-tags

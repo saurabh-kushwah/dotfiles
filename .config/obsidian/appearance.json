@@ -1,0 +1,17 @@
+{
+  "accentColor": "",
+  "baseFontSize": 13,
+  "baseFontSizeAction": false,
+  "cssTheme": "Border",
+  "enabledCssSnippets": [
+    "enlarge-image-on-hover",
+    "no-underline",
+    "links"
+  ],
+  "interfaceFontFamily": "FiraCode NF",
+  "monospaceFontFamily": "FiraCode NF",
+  "showViewHeader": true,
+  "textFontFamily": "FiraCode NF",
+  "theme": "moonstone",
+  "translucency": false
+}

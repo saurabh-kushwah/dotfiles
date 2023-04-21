@@ -1,0 +1,16 @@
+{
+  "alwaysUpdateLinks": true,
+  "attachmentFolderPath": "./assets",
+  "defaultViewMode": "source",
+  "livePreview": true,
+  "newFileLocation": "current",
+  "newLinkFormat": "relative",
+  "promptDelete": false,
+  "showInlineTitle": true,
+  "showLineNumber": false,
+  "useMarkdownLinks": true,
+  "userIgnoreFilters": [
+    "assets"
+  ],
+  "vimMode": true
+}

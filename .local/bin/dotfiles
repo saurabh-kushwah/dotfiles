@@ -1,0 +1,165 @@
+#!/bin/bash
+
+set -e
+
+TOOLS=(
+  jq tree unzip
+  neovim sshpass
+
+  shellcheck sqlite3
+  bat fd-find ripgrep
+
+  nodejs python3 python3-pip
+  inotify-tools dnsutils net-tools
+
+  # tmux deps
+  bison pkg-config autotools-dev automake
+  libevent-dev ncurses-dev build-essential
+
+  openjdk-19-jdk-headless openjdk-19-jre-headless
+)
+
+function dot() {
+  git --git-dir=$HOME/.bare/dotfiles/ --work-tree=$HOME "$@"
+}
+
+function dot-setup() {
+  echo ".bare/" >> $HOME/.gitignore
+
+  local DOTFILES_DIR="$HOME/.bare/dotfiles"
+
+  if [ -d $DOTFILES_DIR ]; then
+    echo "dotfiles already initialized, removing..."
+    dot ls-files -cmds --deduplicate --full-name | xargs rm -rf
+    dot status -s | cut -c4- | xargs rm -rf
+    rm -rf $DOTFILES_DIR
+  fi
+
+  git clone --bare https://github.com/saurabhkushwah0/dotfiles $DOTFILES_DIR
+  dot config --local status.showUntrackedFiles no
+  dot checkout
+}
+
+function dot-install() {
+  source ~/.bashrc
+
+  # add user to sudoers file with no password
+  echo 'saurabh ALL=(ALL) NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo
+
+  sudo apt update
+  curl -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash -
+  sudo add-apt-repository ppa:neovim-ppa/unstable -y
+  sudo apt update
+
+  sudo apt install -y --no-install-recommends ${TOOLS[@]}
+  sudo apt upgrade -y
+
+  mkdir -p ~/.local/bin
+
+  ln -sf /usr/bin/batcat ~/.local/bin/bat
+  ln -sf $(which fdfind) ~/.local/bin/fd
+
+  # install go
+  local GO_VERSION="1.20.2"
+  local GO_FILE=go${GO_VERSION}.linux-amd64.tar.gz
+  wget --directory-prefix=/tmp/ https://go.dev/dl/$GO_FILE
+
+  sudo rm -rf /usr/local/go
+  sudo tar -C /usr/local -xzf "/tmp/$GO_FILE"
+  rm -rf $GO_FILE
+
+  # install fzf
+  rm -rf ~/.fzf
+  git clone --depth=1 https://github.com/junegunn/fzf.git ~/.fzf
+
+  pushd ~/.fzf
+  git pull
+  ~/.fzf/install --all --no-update-rc
+  popd
+
+  go install mvdan.cc/sh/v3/cmd/shfmt@latest
+
+  # install aws cliv2
+  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o /tmp/awscliv2.zip
+  unzip /tmp/awscliv2.zip -d /tmp/
+  sudo /tmp/aws/install --update
+  sudo rm -rf /tmp/awscliv2.zip /tmp/aws
+
+  tmux-setup
+
+  curl https://sh.rustup.rs -sSf |
+    sh -s -- -y --no-modify-path --default-toolchain nightly
+
+  if [ ! -z "${WSL_DISTRO_NAME}" ]; then
+    sudo add-apt-repository ppa:wslutilities/wslu -y
+    sudo apt update
+    sudo apt install wslu -y
+  fi
+
+  sudo apt clean -y
+  sudo apt autoremove -y
+}
+
+function tmux-setup() {
+
+  mkdir -p ~/gh/tmux
+  rm -rf ~/gh/tmux
+
+  git clone --depth=1 https://github.com/tmux/tmux ~/gh/tmux
+  pushd ~/gh/tmux
+
+  sh autogen.sh
+  ./configure
+  make
+  sudo make install
+  make clean
+
+  popd
+}
+
+function notes-sync() {
+  if [ ! -d ~/ns ]; then
+    return
+  fi
+
+  pushd ~/ns
+  git add .
+  git commit -m "update: notes"
+  git push
+  popd
+}
+
+function dot-push() {
+  vscode-sync --backup
+  obsidian-sync --backup
+
+  dot status -s | cut -c4- | xargs dot add
+  dot commit -m "update: dotfiles"
+  dot push
+
+  notes-sync
+}
+
+while (($# > 0)); do
+  case "$1" in
+    --push)
+        dot-push
+      ;;
+    --pull)
+        dot-pull
+      ;;
+    --setup)
+        dot-setup
+      ;;
+    --install)
+        dot-install
+      ;;
+    --*)
+      echo "unknown option $1"
+      ;;
+    *)
+      echo "unknown argument $1"
+      ;;
+  esac
+  shift
+done

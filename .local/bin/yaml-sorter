@@ -1,0 +1,10 @@
+#!/usr/bin/env python3
+
+import yaml, sys
+
+if len(sys.argv) > 1:
+  descriptor=open(sys.argv[1])
+else:
+  descriptor=sys.stdin
+
+print(yaml.dump(yaml.load(descriptor, yaml.Loader), sort_keys=True))

@@ -1,0 +1,16 @@
+jrnl/
+
+node_modules/
+
+*zip
+*pdf
+*target/
+*output/
+
+!/.gitignore
+
+!go/
+go/*
+!go/src/
+
+.bare/

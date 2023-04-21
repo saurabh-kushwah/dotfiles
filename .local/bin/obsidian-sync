@@ -1,0 +1,82 @@
+#!/bin/bash
+
+set -e
+
+#HOME_DIRECTORY=$(wslpath "$(wslvar USERPROFILE)")
+#OBSIDIAN_CONFIG_PATH="$HOME_DIRECTORY/AppData/Roaming/Code/User"
+export OBSIDIAN_CONFIG_PATH='/mnt/d/Huygens Cassini/.obsidian'
+
+OBSIDIAN_CONFIG_FILES=(
+  themes
+  plugins
+  snippets
+  app.json
+  graph.json
+  hotkeys.json
+  switcher.json
+  appearance.json
+  daily-notes.json
+  core-plugins.json
+  command-palette.json
+  community-plugins.json
+)
+
+function obsidian-backup() {
+  echo "backup obsidian files"
+
+  mkdir -p ~/.config/obsidian
+  pushd ~/.config/obsidian
+
+  for item in ${OBSIDIAN_CONFIG_FILES[@]}; do
+    cp -rf "$OBSIDIAN_CONFIG_PATH/$item" .
+  done
+
+  # change file format from dos to unix
+  find "${OBSIDIAN_CONFIG_FILES[@]}" -type f |
+    xargs -L1 nvim --headless -N -u NONE -n -c "set nomore | set ff=unix | w | qa" &> /dev/null
+
+  FILES=$(find "${OBSIDIAN_CONFIG_FILES[@]}" -path '*.json' -type f)
+  for file in ${FILES}; do
+    json-sorter $file > $file.bak
+    mv -f $file.bak $file
+    rm -f $file.bak
+  done
+
+  popd
+}
+
+function obsidian-restore() {
+  TARGET_DIRECTORY="$@"
+
+  if [ ! -d "${TARGET_DIRECTORY}" ]; then
+    echo "target directory '${TARGET_DIRECTORY}' does not exists"
+    exit 1
+  fi
+
+  mkdir -p "${TARGET_DIRECTORY}/.obsidian"
+  pushd "${TARGET_DIRECTORY}/.obsidian"
+
+  echo "restore obsidian files ${TARGET_DIRECTORY}"
+  cp -rfv ~/.config/obsidian/* .
+
+  popd
+}
+
+while (($# > 0)); do
+  case "$1" in
+    --backup)
+        obsidian-backup
+      ;;
+    --restore)
+        obsidian-restore ${@:2}
+        break
+      ;;
+    --*)
+      echo "unknown option $1"
+      ;;
+    *)
+      echo "unknown argument $1"
+      ;;
+  esac
+  shift
+done

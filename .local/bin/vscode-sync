@@ -1,0 +1,75 @@
+#!/bin/bash
+
+set -e
+
+HOME_DIRECTORY=$(wslpath "$(wslvar USERPROFILE)")
+VSCODE_CONFIG_PATH="$HOME_DIRECTORY/AppData/Roaming/Code/User"
+
+mkdir -p ~/.config/Code/User
+pushd ~/.config/Code/User
+
+VSCODE_CONFIG_FILES=(
+  snippets
+  settings.json
+  keybindings.json
+)
+
+function vscode-backup() {
+  echo "backup vscode files"
+
+  for item in ${VSCODE_CONFIG_FILES[@]}; do
+    cp -rf $VSCODE_CONFIG_PATH/$item .
+  done
+
+  # change file format from dos to unix
+  find "${VSCODE_CONFIG_FILES[@]}" -type f |
+    xargs -L1 nvim --headless -N -u NONE -n -c "set nomore | set ff=unix | w | qa" &> /dev/null
+
+  FILES=$(find "${VSCODE_CONFIG_FILES[@]}" -path '*.json' -type f)
+  for file in ${FILES}; do
+    json-sorter $file > $file.bak
+    mv -f $file.bak $file
+    rm -f $file.bak
+  done
+
+  mkdir -p extensions
+
+  CHECK_VERSION='code --list-extensions --show-versions'
+  $CHECK_VERSION > extensions/server
+  powershell.exe "$CHECK_VERSION" > extensions/client &> /dev/null
+}
+
+function vscode-restore() {
+  echo "restore vscode files"
+  for item in settings.json keybindings.json snippets; do
+    cp -rf $item $VSCODE_CONFIG_PATH/
+  done
+
+  # for extension in $(cat extensions/server); do
+  #   code --install-extension "$extension"
+  # done
+
+  # for extension in $(cat extensions/client); do
+  #   powershell.exe "code --install-extension $extension"
+  # done
+}
+
+while (($# > 0)); do
+  case "$1" in
+    --backup)
+        vscode-backup
+      ;;
+    --restore)
+        vscode-restore
+      ;;
+    --*)
+      echo "unknown option $1"
+      ;;
+    *)
+      echo "unknown argument $1"
+      ;;
+  esac
+  shift
+done
+
+popd

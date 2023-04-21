@@ -1,0 +1,30 @@
+#set editing-mode vi
+
+# single tab partial completion else double tab to show all combination
+set completion-ignore-case on
+
+# disable bell
+set bell-style none
+
+# vi/emacs
+# set show-mode-in-prompt on
+
+# Enable Readline not waiting for additional input when a key is pressed.
+# Needed for the mappings below.
+set keyseq-timeout 0
+
+set keymap emacs
+"\ea": vi-editing-mode
+
+set keymap vi-command
+"\ea": emacs-editing-mode
+"k":   history-search-backward
+"j":   history-search-forward
+"z":   emacs-editing-mode
+
+set keymap vi-insert
+"\ea":  emacs-editing-mode
+"\C-a": beginning-of-line
+"\C-e": end-of-line
+"\C-k": kill-line
+"\C-l": clear-screen

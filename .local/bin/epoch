@@ -1,0 +1,42 @@
+#!/usr/bin/env python3
+
+import sys
+from datetime import datetime, timedelta
+
+"""
+show current time in UTC
+"""
+
+td_epc = datetime.now().timestamp()
+td_utc = datetime.utcfromtimestamp(td_epc)
+
+def epochify(epoch):
+
+  epoch = float(epoch)
+
+  # convert nano/micro/milli to sec
+  if epoch > 1e9:
+    epoch /= 1e9
+  elif epoch > 1e6:
+    epoch /= 1e6
+  elif epoch > 1e3:
+    epoch /= 1e3
+
+  epoch = int(epoch)
+
+  try:
+    dt_utc = datetime.utcfromtimestamp(epoch)
+    dt_str = dt_utc.strftime("%-9A %-9B %d %Y %H:%M:%S UTC")
+    diff = (td_utc - dt_utc).days
+    dt_diff = f"{abs(diff)} days " + ("ago" if diff > 0 else "later")
+
+    return f"{dt_str} {dt_diff: >25}"
+  except Exception as e:
+    print(f"Error: {e}")
+
+if len(sys.argv) == 1:
+    sys.argv.append(td_epc)
+
+for arg in sys.argv[1:]:
+    dt_str = epochify(arg)
+    print(f"{arg: >16} : {dt_str}");
