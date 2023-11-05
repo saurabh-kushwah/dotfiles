@@ -165,11 +165,13 @@ function t() {
   fi
 }
 
+alias tls='tmux list-session'
+
 # tmux clear session
 function tcs() {
   tmux list-session -F '#{session_name}' |
     grep -v $(tmux display-message -p '#{session_name}') |
-    xargs -L 1 tmux kill-session -t
+    xargs -L 1 --no-run-if-empty tmux kill-session -t
 }
 
 # more info pstree
@@ -350,29 +352,6 @@ function maketar() {
 # Create a ZIP archive of a file or folder.
 function makezip() {
   zip -r "${1%%/}.zip" "$1"
-}
-
-# extracts the given file
-function x() {
-  if [ -f "$1" ]; then
-    echo Extracting "$1" ...
-    case "$1" in
-      *.7z)       7z x       "$1" ;;
-      *.Z)        uncompress "$1" ;;
-      *.bz2)      bunzip2    "$1" ;;
-      *.gz)       gunzip     "$1" ;;
-      *.rar)      unrar e    "$1" ;;
-      *.tar)      tar xf     "$1" ;;
-      *.tar.bz2)  tar xjf    "$1" ;;
-      *.tar.gz)   tar xzf    "$1" ;;
-      *.tbz2)     tar xjf    "$1" ;;
-      *.tgz)      tar xzf    "$1" ;;
-      *.zip)      unzip      "$1" ;;
-      *)          echo "'$1' cannot be extracted via extract()" ;;
-    esac
-  else
-    echo "'$1' is not a valid file"
-  fi
 }
 
 #--------------------------------------------------------------------------------
