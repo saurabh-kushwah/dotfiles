@@ -156,6 +156,11 @@ if vscode-terminal; then
 fi
 
 function t() {
+  if { [ "$TERM" = "tmux-256color" ] && [ -n "$TMUX" ]; } then
+    echo "already in tmux session"
+    return 1
+  fi
+
   local TMUX_SESSION_NAME=${TERM_PROGRAM:- terminal}
 
   if tmux has-session -t ${TMUX_SESSION_NAME} &> /dev/null; then
