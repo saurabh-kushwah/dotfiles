@@ -1,4 +1,4 @@
-theme = "ayu_evolve"
+theme = "ayu_darkk"
 
 [editor]
 auto-save = true
@@ -29,8 +29,8 @@ display-inlay-hints = true
 
 [editor.indent-guides]
 render = true
-character = "╎" 
+character = "╎"
 skip-levels = 1
 
 [keys.insert]
-j = { k = "normal_mode" } 
+j = { k = "normal_mode" }
