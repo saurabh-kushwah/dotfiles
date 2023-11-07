@@ -516,7 +516,7 @@ function gsw() {
     awk '{print $1}'
 }
 
-function git-fetch() {
+function gfh() {
   REMOTE_NAME=$(git remote | fzf)
 
   if [ -z $REMOTE_NAME ]; then
