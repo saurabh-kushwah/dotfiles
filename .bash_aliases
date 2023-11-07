@@ -156,9 +156,8 @@ if vscode-terminal; then
 fi
 
 function t() {
-  if { [ "$TERM" = "tmux-256color" ] && [ -n "$TMUX" ]; } then
-    echo "already in tmux session"
-    return 1
+  if [[ "$TERM" =~ "tmux" ]] && [ -n "$TMUX" ]; then
+    return 0
   fi
 
   local TMUX_SESSION_NAME=${TERM_PROGRAM:- terminal}
@@ -517,7 +516,7 @@ function gsw() {
     awk '{print $1}'
 }
 
-function gfh() {
+function git-fetch() {
   REMOTE_NAME=$(git remote | fzf)
 
   if [ -z $REMOTE_NAME ]; then
