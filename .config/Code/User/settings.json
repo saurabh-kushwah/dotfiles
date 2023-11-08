@@ -59,6 +59,7 @@
   "extensions.ignoreRecommendations": true,
   "files.associations": {
     "*.mod": "plaintext",
+    "*.sum": "plaintext",
     "jenkinsfile": "groovy"
   },
   "files.defaultLanguage": "plaintext",
