@@ -141,15 +141,11 @@ alias diff='diff -uZB --color=always'
 # open multiple files in buffer
 alias vim='nvim -p'
 
-alias todo='e ~/.todo'
-
 # clear screen do not clear the terminal scrollback buffer
 alias c='clear -x'
 
-alias l='less'
-alias q='exit 0'
-
 alias e="$EDITOR"
+alias q='exit 0'
 
 if vscode-terminal; then
   alias e='code --reuse-window'
@@ -252,25 +248,25 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 # Use `` as the trigger sequence instead of the default **
 export FZF_COMPLETION_TRIGGER='``'
 
-export FZF_DEFAULT_OPTS="
+export FZF_DEFAULT_OPTS='
   --height=90% --layout=reverse --info=hidden --border=none
 
-  --preview 'bat --plain --color=always {}'
+  --preview "bat --plain --color=always {}"
   --preview-window=bottom,70%,border-rounded,wrap,hidden
 
-  --bind 'alt-k:up'
-  --bind 'alt-j:down'
-  --bind 'alt-l:accept'
-  --bind 'change:first'
+  --bind "alt-k:up"
+  --bind "alt-j:down"
+  --bind "alt-l:accept"
+  --bind "change:first"
 
-  --bind 'btab:toggle+up'
-  --bind 'tab:toggle+down'
+  --bind "btab:toggle+up"
+  --bind "tab:toggle+down"
 
-  --bind 'alt-a:toggle-all'
-  --bind 'alt-x:toggle-preview'
+  --bind "alt-a:toggle-all"
+  --bind "alt-x:toggle-preview"
 
-  --bind 'alt-b:preview-page-up'
-  --bind 'alt-f:preview-page-down'
+  --bind "alt-b:preview-page-up"
+  --bind "alt-f:preview-page-down"
 
   --cycle --literal --tabstop=2 --exit-0
 
@@ -278,7 +274,7 @@ export FZF_DEFAULT_OPTS="
   --color=fg+:#c0c0c0,bg+:#000000,hl+:#5fd7ff
   --color=info:#afaf87,prompt:#d7005f,pointer:#af5fff
   --color=marker:#87ff00,spinner:#af5fff,header:#87afaf
-"
+'
 
 function fzf-search-widget() {
   IFS=: read -ra selected < <(
@@ -350,7 +346,7 @@ bind -m emacs-standard -x '"\e`": fzf-shell-eval-widget'
 
 # Creates an archive (*.tar.gz) from given directory.
 function maketar() {
-  tar cvzf "${1%%/}.tar.gz"  "${1%%/}/"
+  tar cvzf "${1%%/}.tar.gz" "${1%%/}/"
 }
 
 # Create a ZIP archive of a file or folder.
@@ -360,7 +356,7 @@ function makezip() {
 
 #--------------------------------------------------------------------------------
 
-alias dim="docker images"
+alias dim='docker images'
 alias drmd='docker rmi $(docker images -f "dangling=true" -q)'
 alias drpu='docker system prune --all --force --volumes'
 
@@ -577,10 +573,6 @@ alias webshare='python3 -m http.server 8081'
 # refer the file name inside the folder as module
 # py-utils/fzf.py -> import fzf
 export PYTHONPATH="${HOME}/.local/lib/py-utils"
-
-# --------------------------------------------------------------------------------
-
-alias spr='./mvnw spring-boot:run'
 
 # --------------------------------------------------------------------------------
 
