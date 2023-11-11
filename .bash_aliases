@@ -357,8 +357,6 @@ function makezip() {
 #--------------------------------------------------------------------------------
 
 alias dim='docker images'
-alias drmd='docker rmi $(docker images -f "dangling=true" -q)'
-alias drpu='docker system prune --all --force --volumes'
 
 DOCKER_PS_FORMAT='table {{.Names}}\t=> {{.Image}}\t=> {{.Status}}'
 
@@ -455,6 +453,12 @@ function dls() {
       tmux new-window -n $container "docker logs --follow $container $@"
     fi
   done
+}
+
+function docker-prune() {
+  docker ps -a -q | xargs --no-run-if-empty docker rm -f
+  docker images -a -q | xargs --no-run-if-empty docker rmi -f
+  docker system prune --all --force --volumes
 }
 
 # generic docker container picker
