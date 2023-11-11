@@ -334,13 +334,6 @@ function fzf-shell-eval-widget() {
     selected="\${$selected}"
   fi
 
-  local R_PREFIX="${READLINE_LINE:0:READLINE_POINT}"
-  if [[ "${R_PREFIX}" != "" && "${R_PREFIX}" =~ "\|\s*$" ]]; then
-    if [[ "$input" == "[function] "* ]]; then
-      selected="\$($selected)"
-    fi
-  fi
-
   READLINE_LINE="${READLINE_LINE:0:READLINE_POINT}$selected${READLINE_LINE:READLINE_POINT}"
   READLINE_POINT=$((READLINE_POINT + ${#selected}))
 }
