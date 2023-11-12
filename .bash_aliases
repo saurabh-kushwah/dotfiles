@@ -71,7 +71,7 @@ function go-cover() {
 }
 
 function vscode-terminal() {
-  if [[ "$TERM_PROGRAM" == "vscode" ]] || [ ! -z ${VSCODE_GIT_ASKPASS_NODE} ]; then
+  if [[ "$TERM_PROGRAM" == "vscode" || ${VSCODE_GIT_ASKPASS_NODE} != "" ]]; then
     return 0
   fi
 
