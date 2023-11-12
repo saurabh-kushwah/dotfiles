@@ -1,2 +1,4 @@
+Extensions installed on WSL: Ubuntu:
 esbenp.prettier-vscode@10.1.0
-golang.go@0.39.1
+rust-lang.rust-analyzer@0.3.1722
+vadimcn.vscode-lldb@1.10.0

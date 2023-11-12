@@ -46,7 +46,7 @@
   "editor.suggest.preview": true,
   "editor.suggestSelection": "first",
   "editor.tabCompletion": "on",
-  "editor.tabSize": 2,
+  "editor.tabSize": 4,
   "editor.unfoldOnClickAfterEndOfLine": true,
   "editor.unusualLineTerminators": "auto",
   "editor.wordWrapColumn": 120,

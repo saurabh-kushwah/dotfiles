@@ -8,6 +8,8 @@
   "promptDelete": false,
   "showInlineTitle": true,
   "showLineNumber": false,
+  "spellcheck": true,
+  "tabSize": 2,
   "useMarkdownLinks": true,
   "userIgnoreFilters": [
     "assets"
