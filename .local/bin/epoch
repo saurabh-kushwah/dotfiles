@@ -14,7 +14,7 @@ def convert_to_seconds(no):
 
     # timestamp is in nanoseconds
     if no >= 1E16 or no <= -1E16:
-        no = no // 1E6
+        no = no // 1E9
 
     # timestamp is in microseconds
     elif no >= 1E14 or no <= -1E14:
