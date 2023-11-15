@@ -46,7 +46,7 @@ def epochify(epoch):
     print(f"Error: {e}")
 
 if len(sys.argv) == 1:
-    sys.argv.append(td_epc)
+    sys.argv.append(int(td_epc))
 
 for arg in sys.argv[1:]:
     dt_str = epochify(arg)
