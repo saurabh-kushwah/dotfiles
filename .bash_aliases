@@ -495,7 +495,7 @@ function gspo() {
 
 function gco() {
   git --no-pager branch -vv | fzf +m |
-    awk '{print $1}' | sed "s/.* //" | xargs git checkout
+    awk '{print $1}' | sed 's/.* //' | xargs git checkout
 }
 
 function grs() {
@@ -509,7 +509,7 @@ function gad() {
 }
 
 function gsw() {
-  git log --format="%h %s [%cr]" |
+  git log --format='%h %s [%cr]' |
     fzf --multi --height=90% \
         --preview 'git show --color=always {1}' \
         --bind 'ctrl-r:reload(git log --reverse --format="%h %s [%cr]")' |
@@ -539,7 +539,7 @@ alias k='minikube kubectl --'
 #--------------------------------------------------------------------------------
 
 function wsl-linux() {
-  if grep -qEi "(Microsoft|WSL)" /proc/version &> /dev/null; then
+  if grep -qEi '(Microsoft|WSL)' /proc/version &> /dev/null; then
     return 0
   fi
 
