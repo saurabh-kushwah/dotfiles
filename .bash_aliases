@@ -3,9 +3,9 @@ unalias -a
 # infinite history
 export HISTSIZE=
 export HISTFILESIZE=
-export HISTFILE=~/.bash_history
+export HISTFILE="${HOME}/.bash_history"
 export HISTTIMEFORMAT="[%F %T] "
-export HISTCONTROL=ignoredups:erasedups
+export HISTCONTROL='ignoredups:erasedups'
 PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 # write history to file on exit
@@ -35,13 +35,19 @@ set -o pipefail
 # set -o vi
 export PS1='\n\[\e[32m\]\w\[\e[00m\] '
 
-alias update='sudo apt update && sudo apt upgrade -y'
+function update() {
+  sudo apt update
+  sudo apt upgrade -y
+
+  sudo apt clean
+  sudo apt autoremove -y
+}
 
 # golang
 export GOOS=linux
 export GOARCH=amd64
 export GOPATH=$HOME/go
-add_path "$HOME/go/bin"
+add_path "${HOME}/go/bin"
 add_path '/usr/local/go/bin'
 
 # disable dynamic linking
@@ -152,7 +158,7 @@ if vscode-terminal; then
 fi
 
 function t() {
-  if [[ "$TERM" =~ "tmux" ]] && [ -n "$TMUX" ]; then
+  if [[ "$TERM" =~ 'tmux' ]] && [ -n "$TMUX" ]; then
     return 0
   fi
 
@@ -232,12 +238,12 @@ alias fzf-tmux='fzf-tmux -p -w 90% -h 60% --'
 
 # Use fd (https://github.com/sharkdp/fd) instead of the default find
 _fzf_compgen_path() {
-  fd --type f --type l --follow --exclude ".git" . "$1"
+  fd --type f --type l --follow --exclude '.git' . "$1"
 }
 
 # Use fd to generate the list for directory completion
 _fzf_compgen_dir() {
-  fd --type d --follow --exclude ".git" . "$1"
+  fd --type d --follow --exclude '.git' . "$1"
 }
 
 # FZF use fd instead of find
@@ -489,17 +495,18 @@ function gspu() {
 
 function gspo() {
   git stash list |
-    fzf +m --delimiter ':' --preview 'git stash show -p {1}' | cut -d ':' -f 1 |
+    fzf --multi --delimiter ':' --preview 'git stash show -p {1}' | cut -d ':' -f 1 |
     xargs git stash apply
 }
 
 function gco() {
-  git --no-pager branch -vv | fzf +m |
-    awk '{print $1}' | sed 's/.* //' | xargs git checkout
+  git --no-pager branch -vv |
+    fzf --multi | awk '{print $1}' | sed 's/.* //' |
+    xargs git checkout
 }
 
 function grs() {
-  git status --untracked-files=no --short | cut -c4- | fzf --multi |
+  git status --untracked-files=no --short --renames | cut -c4- | fzf --multi |
     xargs -t -p git restore
 }
 
@@ -510,7 +517,7 @@ function gad() {
 
 function gsw() {
   git log --format='%h %s [%cr]' |
-    fzf --multi --height=90% \
+    fzf --multi --height='90%' \
         --preview 'git show --color=always {1}' \
         --bind 'ctrl-r:reload(git log --reverse --format="%h %s [%cr]")' |
     awk '{print $1}'
@@ -555,7 +562,7 @@ fi
 #--------------------------------------------------------------------------------
 
 function db-scan() {
-  dy scan --keys-only "$@" | sed "1d" | fzf --preview "dy get {1} {2}"
+  dy scan --keys-only "$@" | sed '1d' | fzf --preview 'dy get {1} {2}'
 }
 
 alias db='dy --port 8000 --region local'

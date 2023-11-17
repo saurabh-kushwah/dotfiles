@@ -1,9 +1,10 @@
 import subprocess
 
 def prompt(choices=None, multi=False, preview='', opts = [], delimiter='\n'):
+    selection = []
+
     # convert a list to a string [ 1, 2, 3 ] => "1\n2\n3"
     choices = delimiter.join(map(str, choices)).encode('utf-8')
-    selection = []
 
     if multi:
       opts += ['--multi']
