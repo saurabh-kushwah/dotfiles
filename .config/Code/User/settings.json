@@ -232,6 +232,7 @@
   "terminal.integrated.copyOnSelection": true,
   "terminal.integrated.cursorBlinking": true,
   "terminal.integrated.defaultProfile.linux": "tmux",
+  "terminal.integrated.defaultProfile.windows": "wsl",
   "terminal.integrated.drawBoldTextInBrightColors": false,
   "terminal.integrated.enableMultiLinePasteWarning": false,
   "terminal.integrated.enablePersistentSessions": false,
@@ -242,10 +243,21 @@
     "tmux": {
       "args": [
         "-c",
-        "tmux new -ADs ${PWD##*/}"
+        "tmux new-session -AD -c /home/saurabh -s ${PWD##*/}"
       ],
       "icon": "terminal-tmux",
       "path": "bash"
+    }
+  },
+  "terminal.integrated.profiles.windows": {
+    "wsl": {
+      "args": [
+        "bash",
+        "-c",
+        "tmux new-session -AD -c /home/saurabh -s vscode-windows"
+      ],
+      "icon": "terminal-tmux",
+      "path": "wsl.exe"
     }
   },
   "terminal.integrated.shellIntegration.decorationsEnabled": "never",
