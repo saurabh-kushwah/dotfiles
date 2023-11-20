@@ -243,7 +243,7 @@
     "tmux": {
       "args": [
         "-c",
-        "tmux new-session -AD -c /home/saurabh -s ${PWD##*/}"
+        "tmux new-session -AD -s ${PWD##*/}"
       ],
       "icon": "terminal-tmux",
       "path": "bash"
