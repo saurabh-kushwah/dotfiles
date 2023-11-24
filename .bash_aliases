@@ -4,7 +4,7 @@ unalias -a
 export HISTSIZE=
 export HISTFILESIZE=
 export HISTFILE="${HOME}/.bash_history"
-export HISTTIMEFORMAT="[%F %T] "
+export HISTTIMEFORMAT='[%F %T] '
 export HISTCONTROL='ignoredups:erasedups'
 PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
@@ -77,7 +77,7 @@ function go-cover() {
 }
 
 function vscode-terminal() {
-  if [[ "$TERM_PROGRAM" == "vscode" || ${VSCODE_GIT_ASKPASS_NODE} != "" ]]; then
+  if [[ "$TERM_PROGRAM" == 'vscode' || ${VSCODE_GIT_IPC_HANDLE} != '' ]]; then
     return 0
   fi
 
@@ -446,14 +446,14 @@ function dls() {
     return
   fi
 
-  if [[ "$TERM_PROGRAM" != "tmux" ]]; then
+  if [[ "$TERM_PROGRAM" != 'tmux' ]]; then
     docker logs --follow ${containers[@]}
     return
   fi
 
   for container in ${containers[@]}; do
     state=$(docker ps -a --filter="name=$container" --format='{{.State}}')
-    if [[ $state == "exited" ]]; then
+    if [[ $state == 'exited' ]]; then
       tmux new-window -n $container "docker logs $container | less $@"
     else
       tmux new-window -n $container "docker logs --follow $container $@"

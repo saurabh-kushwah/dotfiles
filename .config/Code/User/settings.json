@@ -300,6 +300,7 @@
   "workbench.list.smoothScrolling": true,
   "workbench.quickOpen.closeOnFocusLost": false,
   "workbench.quickOpen.preserveInput": true,
+  "workbench.startupEditor": "none",
   "workbench.tips.enabled": false,
   "workbench.tree.indent": 4
 }
