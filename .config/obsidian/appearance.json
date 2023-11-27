@@ -10,7 +10,7 @@
   ],
   "interfaceFontFamily": "FiraCode NF",
   "monospaceFontFamily": "FiraCode NF",
-  "showViewHeader": true,
+  "showViewHeader": false,
   "textFontFamily": "FiraCode NF",
   "theme": "obsidian",
   "translucency": false

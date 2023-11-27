@@ -43,39 +43,6 @@ function update() {
   sudo apt autoremove -y
 }
 
-# golang
-export GOOS=linux
-export GOARCH=amd64
-export GOPATH=$HOME/go
-add_path "${HOME}/go/bin"
-add_path '/usr/local/go/bin'
-
-# disable dynamic linking
-# disable symbol optimization
-alias go-debug='CGO_ENABLED=0 go build -gcflags "all=-N -l"'
-
-function go-test() {
-  ARGS=()
-
-  if [[ ! -z "$COVERAGE_FILE" ]]; then
-    ARGS=("-coverprofile=${COVERAGE_FILE}")
-  fi
-
-  go test -race -timeout 6h -vet=all -v -count=1 ${ARGS[@]} "${@:-./...}"
-}
-
-# check for coverage
-function go-cover() {
-  COVERAGE_FILE='/tmp/go-code-cover'
-  rm -f $COVERAGE_FILE ${COVERAGE_FILE}.html
-
-  go-test "${@}"
-  go tool cover -func $COVERAGE_FILE
-  go tool cover -html=$COVERAGE_FILE -o ${COVERAGE_FILE}.html
-
-  unset COVERAGE_FILE
-}
-
 function vscode-terminal() {
   if [[ "$TERM_PROGRAM" == 'vscode' || ${VSCODE_GIT_IPC_HANDLE} != '' ]]; then
     return 0
@@ -362,43 +329,14 @@ function makezip() {
 
 #--------------------------------------------------------------------------------
 
-alias dim='docker images'
-
-DOCKER_PS_FORMAT='table {{.Names}}\t=> {{.Image}}\t=> {{.Status}}'
-
 alias dpa='dps --all'
+alias dim='docker images'
+alias drm='docker-container-picker -a | xargs docker rm -f'
 alias dps='docker ps --format "table {{.ID}}\t{{.Names}}\t{{.State}}\t{{.Image}}"'
 
 function docker-container-picker() {
-  docker ps --no-trunc --format "$DOCKER_PS_FORMAT" "$@" |
+  docker ps --no-trunc --format 'table {{.Names}}\t=> {{.Image}}\t=> {{.Status}}' "$@" |
     sed '1d' | fzf --multi | awk -F '=>' '{print $1}' | tr -d ' '
-}
-
-# run container
-# USAGE drn ...ARGS COMMAND
-function drn() {
-  local COMMAND ARGS
-
-  if (($# == 1)); then
-    ARGS="$@"
-  elif (($# > 1)); then
-    ARGS="${@:1:$#-1}"
-    COMMAND="${@: -1}"
-  fi
-
-  docker images --format '{{.Repository}}:{{.Tag}}' | fzf --multi |
-    xargs -otI '{}' docker run $ARGS '{}' $COMMAND
-}
-
-# Get container IP
-function dip() {
-  local FORMAT_STR
-  FORMAT_STR='{{.Name}}+{{.NetworkSettings.IPAddress}}+'
-  FORMAT_STR+='{{range $p, $conf := .NetworkSettings.Ports}}+{{$p}}'
-  FORMAT_STR+=' -> {{(index $conf 0).HostPort}}{{end}}'
-
-  docker-container-picker -a | xargs docker inspect --format="$FORMAT_STR" |
-    column -t -s '+'
 }
 
 function dex() {
@@ -411,30 +349,9 @@ function dex() {
 function dsh() {
   docker-container-picker |
     xargs -L 1 -oI '{}' tmux new-window -n '{}' \
-      docker exec -e PS1="({})$PS1" -it '{}' "$@" /bin/bash --norc
+      docker exec -it '{}' "$@" /bin/bash
 }
 
-# Stop all containers
-function dst() {
-  docker-container-picker -a -q --filter 'status=running' |
-    xargs docker stop "$@"
-}
-
-# start all container in exited state
-function drs() {
-  docker-container-picker -a -q --filter 'status=exited' |
-    xargs docker start "$@"
-}
-
-# docker restart
-function drt() {
-  docker-container-picker -a -q | xargs docker restart "$@"
-}
-
-# Remove containers, force if running
-function drm() {
-  docker-container-picker -a | xargs docker rm -f "$@"
-}
 
 # docker logs
 function dls() {
@@ -462,7 +379,7 @@ function dls() {
 }
 
 function docker-prune() {
-  docker ps -a -q | xargs --no-run-if-empty docker rm -f
+  docker ps -a -q     | xargs --no-run-if-empty docker rm -f
   docker images -a -q | xargs --no-run-if-empty docker rmi -f
   docker system prune --all --force --volumes
 }
@@ -570,6 +487,40 @@ alias db-get='db-scan | xargs dy get | jq'
 
 alias db-up='docker compose -f ~/.compose/dynamodb.yaml up -d'
 alias db-down='docker compose -f ~/.compose/dynamodb.yaml down -v'
+
+# --------------------------------------------------------------------------------
+
+export GOOS=linux
+export GOARCH=amd64
+export GOPATH=$HOME/go
+add_path "${HOME}/go/bin"
+add_path '/usr/local/go/bin'
+
+# disable dynamic linking
+# disable symbol optimization
+alias go-debug='CGO_ENABLED=0 go build -gcflags "all=-N -l"'
+
+function go-test() {
+  ARGS=()
+
+  if [[ ! -z "$COVERAGE_FILE" ]]; then
+    ARGS=("-coverprofile=${COVERAGE_FILE}")
+  fi
+
+  go test -race -timeout 6h -vet=all -v -count=1 ${ARGS[@]} "${@:-./...}"
+}
+
+# check for coverage
+function go-cover() {
+  COVERAGE_FILE='/tmp/go-code-cover'
+  rm -f $COVERAGE_FILE ${COVERAGE_FILE}.html
+
+  go-test "${@}"
+  go tool cover -func $COVERAGE_FILE
+  go tool cover -html=$COVERAGE_FILE -o ${COVERAGE_FILE}.html
+
+  unset COVERAGE_FILE
+}
 
 # --------------------------------------------------------------------------------
 
