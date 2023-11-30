@@ -447,9 +447,13 @@ function gfh() {
     return
   fi
 
-  git ls-remote --quiet --refs "$REMOTE_NAME" | cut -f 2 |
-      sed 's/^refs\/\(heads\|tags\)\///' | fzf --multi |
-      xargs -L 1 -oI '{}' git fetch ${REMOTE_NAME} '{}:{}'
+  readarray -t BRANCHES <<< $(git ls-remote --quiet --refs "$REMOTE_NAME" |
+    cut -f 2 | sed 's#^refs/\(heads\|tags\)/##' | grep -vE '^refs' |
+    fzf --multi | tee | xargs -L 1 -oI '{}' git fetch ${REMOTE_NAME} '{}:{}')
+
+  if (( ${#BRANCHES[@]} == 1 )); then
+    git checkout ${BRANCHES[0]}
+  fi
 }
 
 #--------------------------------------------------------------------------------
