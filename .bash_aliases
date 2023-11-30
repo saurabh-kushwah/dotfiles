@@ -404,6 +404,7 @@ alias gst='git status'
 alias gpl='git pull origin $(gcb)'
 alias gps='git push saurabh $(gcb)'
 alias gcb='git branch --show-current'
+alias git-branch-picker=$(git branch | cut -f 2 | fzf --multi)
 
 # push only tracked files
 function gspu() {
@@ -447,13 +448,18 @@ function gfh() {
     return
   fi
 
-  readarray -t BRANCHES <<< $(git ls-remote --quiet --refs "$REMOTE_NAME" |
-    cut -f 2 | sed 's#^refs/\(heads\|tags\)/##' | grep -vE '^refs' |
-    fzf --multi | tee | xargs -L 1 -oI '{}' git fetch ${REMOTE_NAME} '{}:{}')
+  readarray -t BRANCHES <<< $(git-remote-branch-picker)
+  echo ${BRANCHES[@]} | tr -s ' ' '\n' | xargs -L 1 -oI '{}' git fetch ${REMOTE_NAME} '{}:{}'
 
   if (( ${#BRANCHES[@]} == 1 )); then
     git checkout ${BRANCHES[0]}
   fi
+}
+
+function git-remote-branch-picker() {
+  git ls-remote --quiet --refs ${@:- origin} |
+    cut -f 2 | sed 's#^refs/\(heads\|tags\)/##' | grep -vE '^refs' |
+    fzf --multi
 }
 
 #--------------------------------------------------------------------------------
