@@ -404,7 +404,7 @@ alias gst='git status'
 alias gpl='git pull origin $(gcb)'
 alias gps='git push saurabh $(gcb)'
 alias gcb='git branch --show-current'
-alias git-branch-picker=$(git branch | cut -f 2 | fzf --multi)
+alias git-branch-picker='git branch | cut -f 2 | fzf --multi'
 
 # push only tracked files
 function gspu() {
