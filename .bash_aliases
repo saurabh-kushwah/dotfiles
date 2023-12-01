@@ -44,7 +44,7 @@ function update() {
 }
 
 function vscode-terminal() {
-  if [[ "$TERM_PROGRAM" == 'vscode' || ${VSCODE_GIT_IPC_HANDLE} != '' ]]; then
+  if [[ "$TERM_PROGRAM" == 'vscode' || ${VSCODE_GIT_IPC_HANDLE} != '' || ${VSCODE_IPC_HOOK_CLI} != '' ]]; then
     return 0
   fi
 
@@ -443,13 +443,15 @@ function gsw() {
 
 function gfh() {
   REMOTE_NAME=$(git remote | fzf)
-
   if [ -z $REMOTE_NAME ]; then
     return
   fi
 
   readarray -t BRANCHES <<< $(git-remote-branch-picker)
-  echo ${BRANCHES[@]} | tr -s ' ' '\n' | xargs -L 1 -oI '{}' git fetch ${REMOTE_NAME} '{}:{}'
+
+  for BRANCH_NAME in ${BRANCHES[@]}; do
+      git fetch ${REMOTE_NAME} +${BRANCH_NAME}:${BRANCH_NAME}
+  done
 
   if (( ${#BRANCHES[@]} == 1 )); then
     git checkout ${BRANCHES[0]}
