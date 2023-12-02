@@ -19,8 +19,8 @@ class EC2:
         next_token = ""
 
         while True:
-            res = self.describe_instances(NextToken='', **kawrgs)
-            instances.append(res['Instances'])
+            res = self.client.describe_instances(NextToken='', **kawrgs)
+            instances.append(res['Reservations']['Instances'])
 
             next_token = res['NextToken']
             if not next_token:
