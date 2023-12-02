@@ -1,3 +1,4 @@
+import fzf
 import boto3
 
 # for input() to save history
@@ -5,20 +6,38 @@ import readline
 
 class EC2:
 
-    def __init__(self, access_key, secret_key, region, logger):
+    def __init__(self, logger, **kwargs):
         self.logger = logger
+        self.client = boto3.client('ec2',**kwargs)
 
-        self.client = boto3.client('ec2',
-            region_name=region,
-            aws_access_key_id=access_key,
-            aws_secret_access_key=secret_key,
-        )
-
-    def list_instances(self, **kawrgs):
+    def list_instances(self, **kwargs):
+        res = self.client.describe_instances(**kwargs)
         instances = []
-        res = self.client.describe_instances(NextToken='', **kawrgs)
 
         for reservation in res['Reservations']:
-            instances.append(reservation['Instances'])
+            instances.extend(reservation['Instances'])
+
+        for instance in instances:
+
+            for tag in instance['Tags']:
+                if tag['Key'] == 'Name':
+                    instance['InstanceName'] = tag['Value']
+
+            instance['__fzf_prompt__'] = f"""
+                {instance['InstanceId']: <25} => {instance['InstanceName']: <60} => {instance['State']['Name']: <16} => {instance['InstanceType']}
+            """.strip()
 
         return instances
+
+    def get_instances(self, multi=True, **kwargs):
+        instances = self.list_instances(**kwargs)
+
+        dct = {}
+        choices = []
+
+        for instance in instances:
+            dct[instance['InstanceId']] = instance
+            choices.append(instance['__fzf_prompt__'])
+
+        res = fzf.prompt(choices=choices, multi=multi)
+        return [ dct[r.split("=>")[0].strip()] for r in res ]

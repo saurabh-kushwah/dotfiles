@@ -1,3 +1,4 @@
+import time
 import boto3
 
 # for input() to save history
@@ -5,19 +6,14 @@ import readline
 
 class SSM:
 
-    def __init__(self, access_key, secret_key, region, logger):
+    def __init__(self, logger, **kwargs):
         self.logger = logger
+        self.client = boto3.client('ssm',**kwargs)
 
-        self.client = boto3.client('ssm',
-            region_name=region,
-            aws_access_key_id=access_key,
-            aws_secret_access_key=secret_key,
-        )
-
-    def send_command(self, instances, commands):
+    def send_command(self, instance_ids, commands):
 
         res = self.client.send_command(
-            InstanceIds = [ instance['instance_id'] for instance in instances ],
+            InstanceIds = instance_ids,
             DocumentName = 'AWS-RunShellScript',
             Parameters = {
                 'commands': commands
@@ -27,9 +23,7 @@ class SSM:
 
         cmd_res = {}
 
-        for instance in instances:
-            instance_id, instance_name = instance['instance_id'], instance[instance_name]
-
+        for instance_id in instance_ids:
             tries = 0
 
             while tries < 10:
@@ -44,10 +38,10 @@ class SSM:
                     )
 
                     if res['Status'] == 'InProgress':
-                        self.logger.info(f"{instance_id: <23}: command execution in progress")
                         continue
 
                     output = res.get('StandardOutputContent') + '\n\n' + res.get('StandardErrorContent')
+                    print(output.strip())
                     cmd_res[instance_id] = output.strip()
                     break
 
@@ -56,7 +50,7 @@ class SSM:
 
         return cmd_res
 
-    def attach_to_instance(self, instance):
+    def attach_to_instance(self, instance_id):
 
         while True:
             try:
@@ -67,5 +61,11 @@ class SSM:
             if not command:
                 continue
 
-            self.run_command(instances, [command])
+            self.send_command([instance_id], [command])
 
+    def tick(self, instance_id, commands, interval=1):
+
+        while True:
+            res = self.send_command([instance_id], commands)
+            print(res[instance_id])
+            time.sleep(interval)
