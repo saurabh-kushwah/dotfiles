@@ -4,6 +4,15 @@ import boto3
 # for input() to save history
 import readline
 
+"""
+kwargs = {
+    "region_name": 'us-east-1',
+    "aws_access_key_id": os.environ["AWS_ACCESS_KEY_ID"],
+    "aws_secret_access_key": os.environ["AWS_SECRET_ACCESS_KEY"],
+    "aws_session_token": os.environ["AWS_SESSION_TOKEN"],
+}
+"""
+
 class SSM:
 
     def __init__(self, logger, **kwargs):
@@ -50,7 +59,7 @@ class SSM:
 
         return cmd_res
 
-    def attach_to_instance(self, instance_id):
+    def attach(self, instance_id):
 
         while True:
             try:
