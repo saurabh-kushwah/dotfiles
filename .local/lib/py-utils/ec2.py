@@ -9,9 +9,9 @@ class EC2:
         self.logger = logger
 
         self.client = boto3.client('ec2',
-            "region_name"=region,
-            "aws_access_key_id"=access_key,
-            "aws_secret_access_key"=secret_key,
+            region_name=region,
+            aws_access_key_id=access_key,
+            aws_secret_access_key=secret_key,
         )
 
     def list_instances(self, **kawrgs):

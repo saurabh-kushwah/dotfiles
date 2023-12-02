@@ -9,9 +9,9 @@ class SSM:
         self.logger = logger
 
         self.client = boto3.client('ssm',
-            "region_name"=region,
-            "aws_access_key_id"=access_key,
-            "aws_secret_access_key"=secret_key,
+            region_name=region,
+            aws_access_key_id=access_key,
+            aws_secret_access_key=secret_key,
         )
 
     def send_command(self, instances, commands):
