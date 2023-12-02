@@ -447,10 +447,10 @@ function gfh() {
     return
   fi
 
-  readarray -t BRANCHES <<< $(git-remote-branch-picker)
+  readarray -t BRANCHES <<< $(git-remote-branch-picker ${REMOTE_NAME})
 
   for BRANCH_NAME in ${BRANCHES[@]}; do
-      git fetch ${REMOTE_NAME} +${BRANCH_NAME}:${BRANCH_NAME}
+      git fetch --update-head-ok ${REMOTE_NAME} +${BRANCH_NAME}:${BRANCH_NAME}
   done
 
   if (( ${#BRANCHES[@]} == 1 )); then

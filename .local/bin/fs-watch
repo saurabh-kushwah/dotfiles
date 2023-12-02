@@ -29,14 +29,18 @@ while [[ $# -gt 0 ]]; do
       shift
       shift
       ;;
+    --)
+      shift
+      break
+      ;;
     *)
-      RUN_COMMAND+=" $1"
+      WATCH_FILES+=("$1")
       shift
       ;;
   esac
 done
 
-RUN_COMMAND=$(echo "${RUN_COMMAND}" | xargs)
+RUN_COMMAND=$(echo "${@}" | xargs)
 
 if [ ! -z "${WINDOW_ID}" ]; then
   PANE_ID=$(tmux list-panes -t ${WINDOW_ID} -F '#{pane_id}')
