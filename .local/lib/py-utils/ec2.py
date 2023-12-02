@@ -16,16 +16,9 @@ class EC2:
 
     def list_instances(self, **kawrgs):
         instances = []
-        next_token = ""
+        res = self.client.describe_instances(NextToken='', **kawrgs)
 
-        while True:
-            res = self.client.describe_instances(NextToken='', **kawrgs)
-
-            for reservation in res['Reservations']:
-                instances.append(reservation['Instances'])
-
-            next_token = res['NextToken']
-            if not next_token:
-                break
+        for reservation in res['Reservations']:
+            instances.append(reservation['Instances'])
 
         return instances
