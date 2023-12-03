@@ -1,4 +1,2 @@
-Extensions installed on WSL: Ubuntu:
 esbenp.prettier-vscode@10.1.0
-ms-python.python@2023.20.0
-ms-python.vscode-pylance@2023.11.10
+golang.go@0.40.0

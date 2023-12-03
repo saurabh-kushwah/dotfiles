@@ -47,7 +47,7 @@ if [ ! -z "${WINDOW_ID}" ]; then
 fi
 
 if (( ${#WATCH_FILES[@]} == 0 )) || [[ -z "${RUN_COMMAND}" ]]; then
-  echo "Usage: fs-watch [-f file ...] command"
+  echo "Usage: fs-watch [file ...] -- command"
   exit
 fi
 
