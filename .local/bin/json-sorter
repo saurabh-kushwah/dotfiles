@@ -3,8 +3,8 @@
 import json, sys
 
 if len(sys.argv) > 1:
-  descriptor=open(sys.argv[1])
+    descriptor = open(sys.argv[1])
 else:
-  descriptor=sys.stdin
+    descriptor = sys.stdin
 
 print(json.dumps(json.load(descriptor), indent=2, sort_keys=True))

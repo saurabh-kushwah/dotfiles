@@ -10,44 +10,45 @@ show current time in UTC
 td_epc = datetime.now().timestamp()
 td_utc = datetime.utcfromtimestamp(td_epc)
 
-def convert_to_seconds(no):
 
+def convert_to_seconds(no):
     # timestamp is in nanoseconds
-    if no >= 1E16 or no <= -1E16:
-        no = no // 1E9
+    if no >= 1e16 or no <= -1e16:
+        no = no // 1e9
 
     # timestamp is in microseconds
-    elif no >= 1E14 or no <= -1E14:
-        no = no // 1E6
+    elif no >= 1e14 or no <= -1e14:
+        no = no // 1e6
 
     # timestamp is in milliseconds
-    elif no >= 1E11 or no <= -3E10:
-        no = no // 1E3
+    elif no >= 1e11 or no <= -3e10:
+        no = no // 1e3
 
     # timestamp is in seconds
     else:
-        if no > 1E11 or no < -1E10:
+        if no > 1e11 or no < -1e10:
             raise Exception("some error")
 
     return no
 
+
 def epochify(epoch):
+    epoch = convert_to_seconds(float(epoch))
 
-  epoch = convert_to_seconds(float(epoch))
+    try:
+        dt_utc = datetime.utcfromtimestamp(epoch)
+        dt_str = dt_utc.strftime("%-9A %-9B %d %Y %H:%M:%S UTC")
+        diff = (td_utc - dt_utc).days
+        dt_diff = f"{abs(diff)} days " + ("ago" if diff > 0 else "later")
 
-  try:
-    dt_utc = datetime.utcfromtimestamp(epoch)
-    dt_str = dt_utc.strftime("%-9A %-9B %d %Y %H:%M:%S UTC")
-    diff = (td_utc - dt_utc).days
-    dt_diff = f"{abs(diff)} days " + ("ago" if diff > 0 else "later")
+        return f"{dt_str} {dt_diff: >25}"
+    except Exception as e:
+        print(f"Error: {e}")
 
-    return f"{dt_str} {dt_diff: >25}"
-  except Exception as e:
-    print(f"Error: {e}")
 
 if len(sys.argv) == 1:
     sys.argv.append(int(td_epc))
 
 for arg in sys.argv[1:]:
     dt_str = epochify(arg)
-    print(f"{arg: >16} : {dt_str}");
+    print(f"{arg: >16} : {dt_str}")

@@ -3,8 +3,8 @@
 import json, sys, yaml
 
 if len(sys.argv) > 1:
-  descriptor=open(sys.argv[1])
+    descriptor = open(sys.argv[1])
 else:
-  descriptor=sys.stdin
+    descriptor = sys.stdin
 
 print(yaml.dump(json.load(descriptor)))
