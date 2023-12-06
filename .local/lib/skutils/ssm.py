@@ -70,7 +70,8 @@ class SSM:
             if not command:
                 continue
 
-            self.send_command([instance_id], [command])
+            res = self.send_command([instance_id], [command])
+            print(res[instance_id])
 
     def tick(self, instance_ids: [str], commands: [str], interval: int = 1):
         while True:
