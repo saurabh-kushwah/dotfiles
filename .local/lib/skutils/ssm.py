@@ -1,3 +1,4 @@
+import sku
 import time
 import boto3
 
@@ -19,7 +20,7 @@ class SSM:
         self.logger = logger
         self.client = boto3.client("ssm", **kwargs)
 
-    def send_command(self, instance_ids, commands):
+    def send_command(self, instance_ids: [str], commands: [str]):
         res = self.client.send_command(
             InstanceIds=instance_ids,
             DocumentName="AWS-RunShellScript",
@@ -46,13 +47,12 @@ class SSM:
                     if res["Status"] == "InProgress":
                         continue
 
-                    output = (
+                    cmd_res[instance_id] = (
                         res.get("StandardOutputContent")
                         + "\n\n"
                         + res.get("StandardErrorContent")
-                    )
-                    print(output.strip())
-                    cmd_res[instance_id] = output.strip()
+                    ).strip()
+
                     break
 
                 except self.client.exceptions.InvocationDoesNotExist:
@@ -60,7 +60,7 @@ class SSM:
 
         return cmd_res
 
-    def attach(self, instance_id):
+    def attach(self, instance_id: str):
         while True:
             try:
                 command = input("$ ").strip()
@@ -72,8 +72,11 @@ class SSM:
 
             self.send_command([instance_id], [command])
 
-    def tick(self, instance_id, commands, interval=1):
+    def tick(self, instance_ids: [str], commands: [str], interval: int = 1):
         while True:
-            res = self.send_command([instance_id], commands)
-            print(res[instance_id])
+            res = self.send_command(instance_ids, commands)
+
+            for instance_id in res:
+                print(res[instance_id])
+
             time.sleep(interval)
