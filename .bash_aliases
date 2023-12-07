@@ -519,7 +519,7 @@ function go-test() {
     ARGS=("-coverprofile=${COVERAGE_FILE}")
   fi
 
-  go test -race -timeout 6h -vet=all -v -count=1 ${ARGS[@]} "${@:-./...}"
+  go test -timeout 6h -vet=all -v -count=1 ${ARGS[@]} "${@:-./...}"
 }
 
 # check for coverage
