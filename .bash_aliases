@@ -44,7 +44,7 @@ function update() {
 }
 
 function vscode-terminal() {
-  if [[ "$TERM_PROGRAM" == 'vscode' || ${VSCODE_GIT_IPC_HANDLE} != '' || ${VSCODE_IPC_HOOK_CLI} != '' ]]; then
+  if [[ "$TERM_PROGRAM" == 'vscode' || ${VSCODE_GIT_IPC_HANDLE} != '' ]]; then
     return 0
   fi
 
