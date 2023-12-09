@@ -40,5 +40,5 @@ class EC2:
             dct[instance["InstanceId"]] = instance
             choices.append(instance["__fzf_prompt__"])
 
-        res = fzf.prompt(choices=choices, multi=multi)
-        return [dct[r.split("=>")[0].strip()] for r in res]
+        selections = fzf.prompt(choices=choices, multi=multi)
+        return [dct[selection.split("=>")[0].strip()] for selection in selections]

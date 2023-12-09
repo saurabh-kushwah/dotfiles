@@ -44,7 +44,7 @@ function update() {
 }
 
 function vscode-terminal() {
-  if [[ "$TERM_PROGRAM" == 'vscode' || ${VSCODE_GIT_IPC_HANDLE} != '' || ${VSCODE_IPC_HOOK_CLI} != '' ]]; then
+  if [[ "$TERM_PROGRAM" == 'vscode' ]] && [[ ${VSCODE_GIT_IPC_HANDLE} != '' || ${VSCODE_IPC_HOOK_CLI} != '' ]]; then
     return 0
   fi
 
@@ -311,7 +311,7 @@ function fzf-shell-eval-widget() {
     selected="\$(${selected})"
   fi
 
-  READLINE_LINE="${READLINE_LINE:0:READLINE_POINT}$selected${READLINE_LINE:READLINE_POINT}"
+  READLINE_LINE="${READLINE_LINE:0:READLINE_POINT}${selected}${READLINE_LINE:READLINE_POINT}"
   READLINE_POINT=$((READLINE_POINT + ${#selected}))
 }
 
