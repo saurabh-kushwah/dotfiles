@@ -27,7 +27,7 @@
   "editor.bracketPairColorization.enabled": true,
   "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
   "editor.codeActionsOnSave": {
-    "source.organizeImports": true
+    "source.organizeImports": "explicit"
   },
   "editor.cursorSurroundingLines": 5,
   "editor.fontFamily": "'FiraCode NFM Retina', Consolas, 'Courier New', monospace",
