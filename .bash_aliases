@@ -63,7 +63,7 @@ alias sbrc='source ~/.bashrc'
 alias bnrc='bash --noprofile --norc'
 
 alias shchk='shellcheck --format=gcc'
-alias shfmt='shfmt -ci -i 2 -sr -s -w -kp'
+alias shfmt='shfmt -w -s -mn -ln bash -i 2 -ci -sr'
 
 # use bat for cat
 if [ -x "$(command -v bat)" ]; then
