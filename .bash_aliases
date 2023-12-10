@@ -307,7 +307,7 @@ function fzf-shell-eval-widget() {
     selected="\${$selected}"
   fi
 
-  if [[ "${READLINE_LINE:0:READLINE_POINT}" != '' && "$input" == "[function] "* ]]; then
+  if [[ "${READLINE_LINE:0:READLINE_POINT}" != '' ]] && [[ "$input" == "[function] "* && "$input" == "[alias] "* ]]; then
     selected="\$(${selected})"
   fi
 
