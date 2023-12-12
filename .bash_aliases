@@ -446,7 +446,12 @@ function gsw() {
 }
 
 function gfh() {
-  REMOTE_NAME=$(git remote | fzf)
+  REMOTE_NAME="$@"
+
+  if [ -z $REMOTE_NAME ]; then
+    REMOTE_NAME=$(git remote | fzf)
+  fi
+
   if [ -z $REMOTE_NAME ]; then
     return
   fi
