@@ -201,7 +201,7 @@ alias ping='ping -c 5'
 alias fzf-tmux='fzf-tmux -p -w 90% -h 60% --'
 
 # fzf
-[ -f ~/.fzf.bash  ] && source ~/.fzf.bash
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # Use fd (https://github.com/sharkdp/fd) instead of the default find
 _fzf_compgen_path() {
@@ -397,7 +397,7 @@ function docker-ps-widget() {
 }
 
 # replace with container name
-# bind -m emacs-standard -x '"\e`": docker-ps-widget'
+bind -m emacs-standard -x '"\ed": docker-ps-widget'
 
 #--------------------------------------------------------------------------------
 
@@ -408,7 +408,6 @@ alias gst='git status'
 alias gpl='git pull origin $(gcb)'
 alias gps='git push saurabh $(gcb)'
 alias gcb='git branch --show-current'
-alias git-branch-picker='git branch | cut -f 2 | fzf --multi'
 
 # push only tracked files
 function gspu() {
@@ -467,11 +466,25 @@ function gfh() {
   fi
 }
 
+function git-branch-picker() {
+  git for-each-ref --sort=-committerdate refs/heads "$@" \
+    --format='%(authordate:short) %(objectname:short) %(refname:short) %(committerdate:relative)' |
+   fzf --multi | cut -d ' ' -f 3
+}
+
 function git-remote-branch-picker() {
   git ls-remote --quiet --refs ${@:- origin} |
     cut -f 2 | sed 's#^refs/\(heads\|tags\)/##' | grep -vE '^refs' |
     fzf --multi
 }
+
+function git-branch-picker-widget() {
+  local selected="$(git-branch-picker | xargs)"
+  READLINE_LINE="${READLINE_LINE:0:READLINE_POINT}$selected${READLINE_LINE:READLINE_POINT}"
+  READLINE_POINT=$((READLINE_POINT + ${#selected}))
+}
+
+bind -m emacs-standard -x '"\eg": git-branch-picker-widget'
 
 #--------------------------------------------------------------------------------
 
