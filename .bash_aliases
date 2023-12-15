@@ -359,7 +359,6 @@ function dsh() {
 
 # docker logs
 function dls() {
-  local containers
   containers=$(docker-container-picker -a | xargs)
   container_count=$(echo ${containers[@]} | wc -w)
 
