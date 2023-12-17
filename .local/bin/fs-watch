@@ -54,7 +54,6 @@ fi
 if [ -z "$PANE_ID" ]; then
   PANE_ID="${TMUX_PANE}"
 else
-
   for ENV in "${ENVS[@]}"; do
     tmux send-keys -t ${PANE_ID} "export ${ENV//-e /}" Enter
   done
