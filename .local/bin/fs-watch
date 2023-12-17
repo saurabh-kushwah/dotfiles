@@ -4,7 +4,7 @@ ENVS=()
 WATCH_FILES=()
 RUN_COMMAND=""
 
-PANE_ID=""
+PANE_ID="$TMUX_PANE"
 WINDOW_ID=""
 
 while [[ $# -gt 0 ]]; do
@@ -42,40 +42,39 @@ done
 
 RUN_COMMAND=$(echo "${@}" | xargs)
 
-if [ ! -z "${WINDOW_ID}" ]; then
-  PANE_ID=$(tmux list-panes -t ${WINDOW_ID} -F '#{pane_id}')
+if [ ! -z "$WINDOW_ID" ]; then
+  PANE_ID=$(tmux list-panes -t $WINDOW_ID -F '#{pane_id}')
 fi
 
-if (( ${#WATCH_FILES[@]} == 0 )) || [[ -z "${RUN_COMMAND}" ]]; then
+if (( ${#WATCH_FILES[@]} == 0 )) || [[ -z "$RUN_COMMAND" ]]; then
   echo "Usage: fs-watch [file ...] -- command"
   exit
 fi
 
-if [ -z "$PANE_ID" ]; then
-  PANE_ID="${TMUX_PANE}"
-else
+# avoid running export in the same pane
+if [[ "$PANE_ID" != "$TMUX_PANE" ]]; then
   for ENV in "${ENVS[@]}"; do
-    tmux send-keys -t ${PANE_ID} "export ${ENV//-e /}" Enter
+    tmux send-keys -t $PANE_ID "export ${ENV//-e /}" Enter
   done
 
-  tmux send-keys -t ${PANE_ID} clear Enter
+  tmux send-keys -t $PANE_ID clear Enter
 fi
 
 REFRESH_COMMAND=$"
 while inotifywait -r -qqe close_write '${WATCH_FILES[@]}'; do
-  tmux send-keys -t ${PANE_ID} C-c Enter clear Enter '${RUN_COMMAND}' Enter
+  tmux send-keys -t $PANE_ID C-c Enter clear Enter '$RUN_COMMAND' Enter
 done
 "
 
-bash -c "${REFRESH_COMMAND}" &
+bash -c "$REFRESH_COMMAND" &
 REFRESH_PID="$!"
 
 CLEANUP_COMMAND=$"
 function cleanup() {
-  pkill --parent ${REFRESH_PID}
+  pkill --parent $REFRESH_PID
 }
 
 trap cleanup exit
 "
 
-tmux send-keys -t ${PANE_ID} C-c Enter "${CLEANUP_COMMAND}" Enter clear Enter
+tmux send-keys -t $PANE_ID C-c Enter "$CLEANUP_COMMAND" Enter clear Enter
