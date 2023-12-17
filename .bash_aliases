@@ -566,7 +566,7 @@ alias python='python3'
 alias webshare='python3 -m http.server 8081'
 
 # refer the file name inside the folder as module
-# py-utils/fzf.py -> import fzf
+# skutils/fzf.py -> import fzf
 export PYTHONPATH="${HOME}/.local/lib/skutils"
 
 # --------------------------------------------------------------------------------

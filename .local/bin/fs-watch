@@ -51,15 +51,8 @@ if (( ${#WATCH_FILES[@]} == 0 )) || [[ -z "${RUN_COMMAND}" ]]; then
   exit
 fi
 
-CURRENT_WINDOW_INDEX=$(tmux display-message -p "#{window_index}")
-
 if [ -z "$PANE_ID" ]; then
-
-  PANE_ID=$(tmux new-window -d -c ${PWD} ${ENVS[@]} -P -F "#{pane_id}")
-
-  function cleanup () { tmux kill-pane -t ${PANE_ID} ; }
-  trap cleanup exit
-
+  PANE_ID="${TMUX_PANE}"
 else
 
   for ENV in "${ENVS[@]}"; do
@@ -69,15 +62,21 @@ else
   tmux send-keys -t ${PANE_ID} clear Enter
 fi
 
-tmux send-keys -t ${PANE_ID} \
-  "function cleanup () { tmux kill-pane -t ${TMUX_PANE} ; }" Enter \
-  "trap cleanup exit" Enter \
-  "clear" Enter
-
-tmux swap-pane -s ${PANE_ID} -t ${TMUX_PANE}
-tmux select-window -t ":${CURRENT_WINDOW_INDEX}"
-tmux last-pane
-
-while inotifywait -r -qqe close_write "${WATCH_FILES[@]}"; do
-  tmux send-keys -t ${PANE_ID} C-c Enter clear Enter "${RUN_COMMAND}" Enter
+REFRESH_COMMAND=$"
+while inotifywait -r -qqe close_write '${WATCH_FILES[@]}'; do
+  tmux send-keys -t ${PANE_ID} C-c Enter clear Enter '${RUN_COMMAND}' Enter
 done
+"
+
+bash -c "${REFRESH_COMMAND}" &
+REFRESH_PID="$!"
+
+CLEANUP_COMMAND=$"
+function cleanup() {
+  pkill --parent ${REFRESH_PID}
+}
+
+trap cleanup exit
+"
+
+tmux send-keys -t ${PANE_ID} C-c Enter "${CLEANUP_COMMAND}" Enter clear Enter

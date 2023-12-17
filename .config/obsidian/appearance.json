@@ -2,7 +2,7 @@
   "accentColor": "",
   "baseFontSize": 13,
   "baseFontSizeAction": false,
-  "cssTheme": "Minimal",
+  "cssTheme": "",
   "enabledCssSnippets": [
     "enlarge-image-on-hover",
     "no-underline",
@@ -12,6 +12,6 @@
   "monospaceFontFamily": "FiraCode NF",
   "showViewHeader": false,
   "textFontFamily": "FiraCode NF",
-  "theme": "obsidian",
+  "theme": "moonstone",
   "translucency": false
 }
