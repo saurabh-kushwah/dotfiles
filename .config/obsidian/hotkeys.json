@@ -37,14 +37,6 @@
       ]
     }
   ],
-  "app:reload": [
-    {
-      "key": "R",
-      "modifiers": [
-        "Alt"
-      ]
-    }
-  ],
   "app:toggle-left-sidebar": [
     {
       "key": "D",
@@ -72,6 +64,23 @@
       "key": "X",
       "modifiers": [
         "Alt"
+      ]
+    }
+  ],
+  "editor:insert-link": [
+    {
+      "key": "K",
+      "modifiers": [
+        "Mod"
+      ]
+    }
+  ],
+  "editor:open-search": [],
+  "editor:open-search-replace": [
+    {
+      "key": "F",
+      "modifiers": [
+        "Mod"
       ]
     }
   ],
@@ -154,14 +163,15 @@
       ]
     }
   ],
-  "markdown:toggle-preview": [],
-  "switcher:open": [
+  "markdown:toggle-preview": [
     {
-      "key": "O",
+      "key": "R",
       "modifiers": [
-        "Mod"
+        "Alt"
       ]
-    },
+    }
+  ],
+  "switcher:open": [
     {
       "key": "O",
       "modifiers": [
@@ -185,12 +195,6 @@
       ]
     },
     {
-      "key": "PageDown",
-      "modifiers": [
-        "Ctrl"
-      ]
-    },
-    {
       "key": "W",
       "modifiers": [
         "Alt"
@@ -206,12 +210,6 @@
       ]
     },
     {
-      "key": "PageUp",
-      "modifiers": [
-        "Ctrl"
-      ]
-    },
-    {
       "key": "Q",
       "modifiers": [
         "Alt"
@@ -219,13 +217,6 @@
     }
   ],
   "workspace:undo-close-pane": [
-    {
-      "key": "T",
-      "modifiers": [
-        "Mod",
-        "Shift"
-      ]
-    },
     {
       "key": "2",
       "modifiers": [

@@ -8,10 +8,6 @@ export HISTTIMEFORMAT='[%F %T] '
 export HISTCONTROL='ignoredups:erasedups'
 PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
-# write history to file on exit
-# use $PROMPT_COMMAND or trap not both
-# trap "history -c" EXIT
-
 function add_path() {
   if [[ :$PATH: != *:"$1":* ]]; then
     export PATH=$PATH:"$1"
