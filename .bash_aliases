@@ -339,19 +339,10 @@ function docker-container-picker() {
     sed '1d' | fzf --multi | awk -F '=>' '{print $1}' | tr -d ' '
 }
 
-function dex() {
-  for id in $(docker-container-picker | xargs); do
-    echo running "'$@'" on "$id" >> /dev/stderr
-    docker exec "$id" "$@"
-  done
-}
-
 function dsh() {
   docker-container-picker |
-    xargs -L 1 -oI '{}' tmux new-window -n '{}' \
-      docker exec -it '{}' "$@" /bin/bash
+    xargs -L 1 -oI '{}' docker exec -it '{}' "$@" /bin/bash
 }
-
 
 # docker logs
 function dls() {

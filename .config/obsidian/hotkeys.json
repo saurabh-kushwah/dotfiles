@@ -171,6 +171,14 @@
       ]
     }
   ],
+  "open-with-default-app:open": [
+    {
+      "key": "I",
+      "modifiers": [
+        "Alt"
+      ]
+    }
+  ],
   "switcher:open": [
     {
       "key": "O",

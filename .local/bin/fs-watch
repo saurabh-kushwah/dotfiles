@@ -60,6 +60,20 @@ if [[ "$PANE_ID" != "$TMUX_PANE" ]]; then
   tmux send-keys -t $PANE_ID clear Enter
 fi
 
+if [[ "$PANE_ID" != "$TMUX_PANE" ]]; then
+
+  tmux send-keys -t ${PANE_ID} \
+    "function cleanup () { tmux kill-pane -t ${TMUX_PANE} ; }" Enter \
+    "trap cleanup exit" Enter \
+    "clear" Enter
+
+  while inotifywait -r -qqe close_write ${WATCH_FILES[@]}; do
+    tmux send-keys -t $PANE_ID C-c Enter clear Enter $RUN_COMMAND Enter
+  done
+
+  exit 0
+fi
+
 REFRESH_COMMAND=$"
 while inotifywait -r -qqe close_write '${WATCH_FILES[@]}'; do
   tmux send-keys -t $PANE_ID C-c Enter clear Enter '$RUN_COMMAND' Enter
