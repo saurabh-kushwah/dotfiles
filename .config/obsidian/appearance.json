@@ -10,6 +10,7 @@
   ],
   "interfaceFontFamily": "FiraCode NF",
   "monospaceFontFamily": "FiraCode NF",
+  "nativeMenus": false,
   "showViewHeader": false,
   "textFontFamily": "FiraCode NF",
   "theme": "moonstone",

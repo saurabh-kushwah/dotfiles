@@ -24,6 +24,7 @@ OBSIDIAN_CONFIG_FILES=(
 function obsidian-backup() {
   echo "backup obsidian files"
 
+  rm -rfv ~/.config/obsidian
   mkdir -p ~/.config/obsidian
   pushd ~/.config/obsidian
 

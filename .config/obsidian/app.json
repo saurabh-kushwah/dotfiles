@@ -10,7 +10,7 @@
   "showInlineTitle": true,
   "showLineNumber": false,
   "spellcheck": false,
-  "strictLineBreaks": true,
+  "strictLineBreaks": false,
   "tabSize": 2,
   "useMarkdownLinks": true,
   "userIgnoreFilters": [
