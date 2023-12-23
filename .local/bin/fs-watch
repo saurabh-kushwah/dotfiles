@@ -68,7 +68,7 @@ if [[ "$PANE_ID" != "$TMUX_PANE" ]]; then
     "clear" Enter
 
   while inotifywait -r -qqe close_write ${WATCH_FILES[@]}; do
-    tmux send-keys -t $PANE_ID C-c Enter clear Enter $RUN_COMMAND Enter
+    tmux send-keys -t $PANE_ID C-c Enter clear Enter "$RUN_COMMAND" Enter
   done
 
   exit 0
