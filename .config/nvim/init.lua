@@ -100,7 +100,7 @@ require("mappings")
 require("terminal")
 
 require("plugins.fzf")
-require("plugins.packer")
+require("plugins.lazy")
 
 require("plugins.treesitter")
 require("plugins.nvim-lualine")

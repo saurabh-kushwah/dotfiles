@@ -140,6 +140,23 @@
       ]
     }
   ],
+  "editor:toggle-fold": [
+    {
+      "key": "C",
+      "modifiers": [
+        "Alt"
+      ]
+    }
+  ],
+  "editor:unfold-all": [
+    {
+      "key": "C",
+      "modifiers": [
+        "Alt",
+        "Shift"
+      ]
+    }
+  ],
   "file-explorer:open": [
     {
       "key": "E",
