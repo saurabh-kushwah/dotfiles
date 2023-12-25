@@ -6,8 +6,8 @@ TOOLS=(
   jq tree unzip
   python3 python3-pip
 
+  clang sqlite3
   bat fd-find ripgrep
-  clang neovim sqlite3
 
   inotify-tools dnsutils net-tools
 
@@ -41,10 +41,15 @@ function dot-install() {
   # add user to sudoers file with no password
   echo 'saurabh ALL=(ALL) NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo
 
-  sudo apt update
-  #curl -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash -
+  sudo apt-get update && sudo apt-get install -y ca-certificates curl gnupg
+  curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+  NODE_MAJOR=20
+  echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" |
+    sudo tee /etc/apt/sources.list.d/nodesource.list
+  sudo apt-get update && sudo apt-get install nodejs -y
+
   sudo add-apt-repository ppa:neovim-ppa/unstable -y
-  sudo apt update
+  sudo apt update && sudo apt-get install neovim -y
 
   sudo apt install -y --no-install-recommends ${TOOLS[@]}
   sudo apt upgrade -y
