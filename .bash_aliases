@@ -308,6 +308,8 @@ function fzf-shell-eval-widget() {
   READLINE_POINT=$((READLINE_POINT + ${#selected}))
 }
 
+alias fzf-file-picker='__fzf_select__'
+
 bind -m emacs-standard -x '"\ef": fzf-file-widget'
 bind -m emacs-standard -x '"\es": fzf-search-widget'
 bind -m emacs-standard -x '"\e`": fzf-shell-eval-widget'
