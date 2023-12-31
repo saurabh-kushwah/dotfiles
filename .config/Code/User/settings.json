@@ -30,7 +30,7 @@
   "editor.bracketPairColorization.enabled": true,
   "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
   "editor.codeActionsOnSave": {
-    "source.organizeImports": "explicit"
+    "source.organizeImports": "always"
   },
   "editor.cursorSurroundingLines": 5,
   "editor.fontFamily": "'FiraCode NFM Retina', Consolas, 'Courier New', monospace",
@@ -47,7 +47,7 @@
     "strings": "on"
   },
   "editor.renderLineHighlightOnlyWhenFocus": true,
-  "editor.renderWhitespace": "trailing",
+  "editor.renderWhitespace": "none",
   "editor.smoothScrolling": true,
   "editor.stickyScroll.enabled": true,
   "editor.suggest.insertMode": "replace",

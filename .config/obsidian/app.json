@@ -7,7 +7,7 @@
   "newLinkFormat": "relative",
   "promptDelete": false,
   "readableLineLength": true,
-  "showInlineTitle": true,
+  "showInlineTitle": false,
   "showLineNumber": false,
   "spellcheck": false,
   "strictLineBreaks": false,
