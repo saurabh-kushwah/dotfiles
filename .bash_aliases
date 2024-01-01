@@ -206,13 +206,12 @@ _fzf_compgen_dir() {
   fd --type d --follow --exclude '.git' . "$1"
 }
 
+export FZF_COMPLETION_TRIGGER='**'
+
 # FZF use fd instead of find
 export FZF_ALT_C_COMMAND='fd --type directory --exclude .git'
 export FZF_DEFAULT_COMMAND='fd --type f --follow --exclude .git'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-
-# Use `` as the trigger sequence instead of the default **
-export FZF_COMPLETION_TRIGGER='``'
 
 export FZF_DEFAULT_OPTS='
   --height=90% --layout=reverse --info=hidden --border=none
