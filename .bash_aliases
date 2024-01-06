@@ -157,7 +157,7 @@ alias debug='set -o nounset; set -o xtrace'
 # run command for each argument separated by whitespaces
 alias xargs='xargs --no-run-if-empty '
 
-alias sql='sqlite3'
+alias sqlite='sqlite3'
 
 # 3.6.6 Here Documents
 # alias wf='cat <<- "EOF" >'
@@ -412,7 +412,7 @@ function gco() {
 
 function grs() {
   git status --untracked-files=no --short --renames | cut -c4- | fzf --multi |
-    xargs -t -p git restore
+    xargs -t -p git restore "$@"
 }
 
 function gad() {
