@@ -411,12 +411,14 @@ function gco() {
 }
 
 function grs() {
-  git status --untracked-files=no --short --renames | cut -c4- | fzf --multi |
+  git status --untracked-files=no --short --renames | cut -c4- |
+    fzf --multi --preview 'git diff --color=always {1}' |
     xargs -t -p git restore "$@"
 }
 
 function gad() {
-  git ls-files -m -o --exclude-standard | fzf -m --print0 |
+  git ls-files -m -o --exclude-standard |
+    fzf --multi --print0 --preview 'git diff --color=always {1}' |
     xargs -0 -r -t git add
 }
 
