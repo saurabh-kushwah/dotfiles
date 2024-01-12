@@ -110,12 +110,8 @@ alias vim='nvim -p'
 # clear screen do not clear the terminal scrollback buffer
 alias c='clear -x'
 
-alias e="$EDITOR"
+alias e="edit"
 alias q='exit 0'
-
-if vscode-terminal; then
-  alias e='code --reuse-window'
-fi
 
 function t() {
   if [[ "$TERM" =~ 'tmux' ]] && [ -n "$TMUX" ]; then
