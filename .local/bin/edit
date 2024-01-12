@@ -1,7 +1,14 @@
 #!/bin/bash
 
 if [[ "$TERM_PROGRAM" == 'vscode' || ${VSCODE_GIT_IPC_HANDLE} != '' || ${VSCODE_IPC_HOOK_CLI} != '' ]]; then
-  code --reuse-window "$@"
+  code --reuse-window "$@" 2> /dev/null
+
+  if [ $? -ne 0 ]; then
+    socket=$(ls -1t /run/user/$UID/vscode-ipc-*.sock 2> /dev/null | head -1)
+    export VSCODE_IPC_HOOK_CLI=${socket}
+    code --reuse-window "$@"
+  fi
+
 else
   nvim -p "$@"
 fi
