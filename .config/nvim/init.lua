@@ -120,6 +120,8 @@ opt.background = "dark"
 command([[
   highlight Comment    cterm=none guibg=none guifg=none
   highlight CursorLine cterm=none guibg=none guifg=none
+
+  colorscheme ayu
 ]])
 
 --opt.colorcolumn="80"
