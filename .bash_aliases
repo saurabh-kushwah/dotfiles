@@ -39,14 +39,6 @@ function update() {
   sudo apt autoremove -y
 }
 
-function vscode-terminal() {
-  if [[ "$TERM_PROGRAM" == 'vscode' || ${VSCODE_GIT_IPC_HANDLE} != '' || ${VSCODE_IPC_HOOK_CLI} != '' ]]; then
-    return 0
-  fi
-
-  return 1
-}
-
 export EDITOR='nvim -p'
 export VISUAL="$EDITOR"
 
@@ -245,7 +237,7 @@ function fzf-search-widget() {
   )
 
   if [ -n "${selected[0]}" ]; then
-    if vscode-terminal; then
+    if [[ ${VSCODE_TERMINAL} != '' ]]; then
       code --reuse-window --goto "${selected[0]}:${selected[1]}"
     else
       vim "${selected[0]}" "+${selected[1]}"

@@ -245,7 +245,9 @@
   "terminal.integrated.drawBoldTextInBrightColors": false,
   "terminal.integrated.enableMultiLinePasteWarning": false,
   "terminal.integrated.enablePersistentSessions": false,
-  "terminal.integrated.env.linux": {},
+  "terminal.integrated.env.linux": {
+    "VSCODE_TERMINAL": "true"
+  },
   "terminal.integrated.fontWeightBold": "normal",
   "terminal.integrated.persistentSessionReviveProcess": "never",
   "terminal.integrated.profiles.linux": {
