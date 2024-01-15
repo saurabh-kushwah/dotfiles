@@ -3,12 +3,40 @@
     "body": "require.Equal(t, ${1}, ${2}, ${3})",
     "prefix": "req"
   },
+  "require.False": {
+    "body": "require.False(t, ${1}, ${2})",
+    "prefix": "rfs"
+  },
+  "require.Nil": {
+    "body": "require.Nil(t, ${1}, ${2})",
+    "prefix": "rni"
+  },
   "require.NoError": {
-    "body": "require.NoError(t, err, \"fail to ${1}\")",
+    "body": "require.NoError(t, err, \"fail to ${1}\", ${2})",
     "prefix": "rne"
+  },
+  "require.NotEqual": {
+    "body": "require.NotEqual(t, ${1}, ${2}, ${3})",
+    "prefix": "rneq"
+  },
+  "require.NotNil": {
+    "body": "require.NotNil(t, ${1}, ${2})",
+    "prefix": "rnni"
+  },
+  "require.NotSame": {
+    "body": "require.NotSame(t, ${1}, ${2}, ${3})",
+    "prefix": "rnsm"
+  },
+  "require.Same": {
+    "body": "require.Same(t, ${1}, ${2}, ${3})",
+    "prefix": "rsm"
+  },
+  "require.True": {
+    "body": "require.True(t, ${1}, ${2})",
+    "prefix": "rtr"
   },
   "test function": {
     "body": "func Test_Xxx(t *testing.T) {\n\ttype arg struct {\n\t${1}\n\t}\n\n\ttype exp struct {\n\t${2}\n\t}\n\n\ttests := []struct {\n\t\tname    string\n\t\tdesc    string\n\t\targ     *arg\n\t\texp     *exp\n\t\tprepare func(arg *arg, exp *exp)\n\t}{\n\t${3}\n\t}\n\n\tfor _, tt := range tests {\n\t\tt.Run(tt.name, func(t *testing.T) {\n\t\t\tif tt.prepare != nil {\n\t\t\t\ttt.prepare(tt.arg, tt.exp)\n\t\t\t}\n\t\t})\n\t}\n}\n\t\t",
-    "prefix": "tf"
+    "prefix": "txx"
   }
 }
