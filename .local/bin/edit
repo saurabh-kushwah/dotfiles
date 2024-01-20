@@ -8,7 +8,6 @@ if [[ ${VSCODE_TERMINAL} != '' ]]; then
     export VSCODE_IPC_HOOK_CLI=${socket}
     code --reuse-window "$@"
   fi
-
 else
   nvim -p "$@"
 fi
