@@ -4,9 +4,12 @@ if [[ ${VSCODE_TERMINAL} != '' ]]; then
   code --reuse-window "$@" 2> /dev/null
 
   if [ $? -ne 0 ]; then
-    socket=$(ls -1t /run/user/$UID/vscode-ipc-*.sock 2> /dev/null | head -1)
-    export VSCODE_IPC_HOOK_CLI=${socket}
-    code --reuse-window "$@"
+    for socket in ls -1t /run/user/$UID/vscode-ipc-*.sock; do
+      VSCODE_IPC_HOOK_CLI=${socket} code --reuse-window "$@" 2> /dev/null
+      if [ $? -eq 0 ]; then
+        break
+      fi
+    done
   fi
 else
   nvim -p "$@"
