@@ -432,7 +432,8 @@ function gfh() {
   readarray -t BRANCHES <<< $(git-remote-branch-picker ${REMOTE_NAME})
 
   for BRANCH_NAME in ${BRANCHES[@]}; do
-      git fetch --update-head-ok ${REMOTE_NAME} +${BRANCH_NAME}:${BRANCH_NAME}
+      # shallow clone branch instead of full history
+      git fetch --depth=1 --update-head-ok ${REMOTE_NAME} +${BRANCH_NAME}:${BRANCH_NAME}
   done
 
   if (( ${#BRANCHES[@]} == 1 )); then
