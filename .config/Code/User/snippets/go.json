@@ -36,7 +36,7 @@
     "prefix": "rtr"
   },
   "test function": {
-    "body": "func Test_Xxx(t *testing.T) {\n\ttype arg struct {\n\t${1}\n\t}\n\n\ttype exp struct {\n\t${2}\n\t}\n\n\ttests := []struct {\n\t\tname    string\n\t\tdesc    string\n\t\targ     *arg\n\t\texp     *exp\n\t\tprepare func(arg *arg, exp *exp)\n\t}{\n\t${3}\n\t}\n\n\tfor _, tt := range tests {\n\t\tt.Run(tt.name, func(t *testing.T) {\n\t\t\tif tt.prepare != nil {\n\t\t\t\ttt.prepare(tt.arg, tt.exp)\n\t\t\t}\n\t\t})\n\t}\n}\n\t\t",
+    "body": "func Test_Xxx(t *testing.T) {\n\ttype arg struct {\n\t${1}\n\t}\n\n\ttype exp struct {\n\t${2}\n\t}\n\n\ttests := []struct {\n\t\tname    string\n\t\targ     *arg\n\t\texp     *exp\n\t\tprepare func(t *testing.T, arg *arg, exp *exp)\n\t}{\n\t${3}\n\t}\n\n\tfor _, tt := range tests {\n\t\tt.Run(tt.name, func(t *testing.T) {\n\t\t\tif tt.prepare != nil {\n\t\t\t\ttt.prepare(t, tt.arg, tt.exp)\n\t\t\t}\n\n      ${4}\n\t\t})\n\t}\n}\n\t\t\n",
     "prefix": "txx"
   }
 }
