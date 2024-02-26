@@ -59,25 +59,3 @@ class SSM:
                     continue
 
         return cmd_res
-
-    def attach(self, instance_id: str):
-        while True:
-            try:
-                command = input("$ ").strip()
-            except:
-                break
-
-            if not command:
-                continue
-
-            res = self.send_command([instance_id], [command])
-            print(res[instance_id])
-
-    def tick(self, instance_ids: [str], commands: [str], interval: int = 1):
-        while True:
-            res = self.send_command(instance_ids, commands)
-
-            for instance_id in res:
-                print(res[instance_id])
-
-            time.sleep(interval)
