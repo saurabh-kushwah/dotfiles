@@ -1,9 +1,6 @@
 import fzf
 import boto3
 
-# for input() to save history
-import readline
-
 
 class EC2:
     def __init__(self, logger, **kwargs):
@@ -30,7 +27,7 @@ class EC2:
 
         return instances
 
-    def get_instances(self, multi=True, **kwargs):
+    def get_instances(self, multi=False, **kwargs):
         instances = self.list_instances(**kwargs)
 
         dct = {}

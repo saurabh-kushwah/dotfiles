@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+
+import os
+import sys
+
+import sku
+import ec2
+
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-r", "--region", default="us-east-1", help="region")
+parser.add_argument(
+    "-t", "--tag", action="append", required=True, default=[], help="aws tag key=value"
+)
+
+args = parser.parse_args()
+
+logger = sku.get_default_logger()
+
+ec2_client = ec2.EC2(logger, region_name=args.region)
+
+filters = [
+    {
+        "Name": "instance-state-name",
+        "Values": ["running"],
+    }
+]
+
+for tag in args.tag:
+    kv = tag.split("=", maxsplit=1)
+    if kv is None or len(kv) == 0 or kv[0] == "" or kv[1] == "":
+        raise Exception("invalid argument")
+
+    filters.append({"Name": f"tag:{kv[0]}", "Values": kv[1].split(",")})
+
+instances = ec2_client.get_instances(multi=True, Filters=filters)
+
+if instances is None or len(instances) == 0:
+    sys.exit(0)
+
+for instance in instances:
+    os.system(
+        f"""
+            tmux new-window -n {instance["InstanceName"]} -e AWS_PROFILE={os.environ["AWS_PROFILE"]} \
+                aws ssm start-session --target {instance["InstanceId"]} \
+                    --document-name SSM-SessionManagerRunShell --region {args.region}
+        """.strip()
+    )

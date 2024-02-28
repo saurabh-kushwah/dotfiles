@@ -1,9 +1,7 @@
-import sku
 import time
 import boto3
 
-# for input() to save history
-import readline
+from typing import List
 
 """
 kwargs = {
@@ -20,7 +18,7 @@ class SSM:
         self.logger = logger
         self.client = boto3.client("ssm", **kwargs)
 
-    def send_command(self, instance_ids: [str], commands: [str]):
+    def send_command(self, instance_ids: List[str], commands: List[str]):
         res = self.client.send_command(
             InstanceIds=instance_ids,
             DocumentName="AWS-RunShellScript",

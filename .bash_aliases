@@ -303,6 +303,12 @@ bind -m emacs-standard -x '"\e`": fzf-shell-eval-widget'
 
 #--------------------------------------------------------------------------------
 
+function aws-profile-picker() {
+  export AWS_PROFILE=$(aws configure list-profiles | fzf)
+}
+
+#--------------------------------------------------------------------------------
+
 # Creates an archive (*.tar.gz) from given directory.
 function maketar() {
   tar cvzf "${1%%/}.tar.gz" "${1%%/}/"

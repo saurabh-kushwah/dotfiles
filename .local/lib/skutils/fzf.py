@@ -1,11 +1,12 @@
 import subprocess
+from typing import List
 
 
 def prompt(
-    choices: [str] = None,
+    choices: List[str] = None,
     multi: bool = False,
     preview_command: str = "",
-    opts: [str] = None,
+    opts: List[str] = None,
     delimiter: str = "\n",
 ):
     if opts is None:

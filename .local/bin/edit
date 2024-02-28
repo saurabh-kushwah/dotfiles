@@ -11,6 +11,7 @@ if [[ ${VSCODE_TERMINAL} != '' ]]; then
       fi
     done
   fi
+
 else
   nvim -p "$@"
 fi
