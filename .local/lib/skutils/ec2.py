@@ -19,11 +19,11 @@ class EC2:
                 if tag["Key"] == "Name":
                     instance["InstanceName"] = tag["Value"]
 
-            instance[
-                "__fzf_prompt__"
-            ] = f"""
+            instance["__fzf_prompt__"] = (
+                f"""
                 {instance['InstanceId']: <25} => {instance['InstanceName']: <60} => {instance['State']['Name']: <16} => {instance['InstanceType']}
             """.strip()
+            )
 
         return instances
 

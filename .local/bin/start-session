@@ -15,7 +15,6 @@ parser.add_argument(
 )
 
 args = parser.parse_args()
-
 logger = sku.get_default_logger()
 
 ec2_client = ec2.EC2(logger, region_name=args.region)
@@ -42,8 +41,12 @@ if instances is None or len(instances) == 0:
 for instance in instances:
     os.system(
         f"""
-            tmux new-window -n {instance["InstanceName"]} -e AWS_PROFILE={os.environ["AWS_PROFILE"]} \
-                aws ssm start-session --target {instance["InstanceId"]} \
-                    --document-name SSM-SessionManagerRunShell --region {args.region}
+            tmux new-window \
+                -n {instance["InstanceName"]} \
+                -e AWS_PROFILE={os.environ["AWS_PROFILE"]} \
+            aws ssm start-session \
+                --target {instance["InstanceId"]} \
+                --document-name SSM-SessionManagerRunShell \
+                --region {args.region}
         """.strip()
     )
