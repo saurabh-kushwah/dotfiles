@@ -492,12 +492,11 @@ fi
 
 #--------------------------------------------------------------------------------
 
+alias db-get='db-scan | xargs dy get | jq'
+
 function db-scan() {
   dy scan --keys-only "$@" | sed '1d' | fzf --preview 'dy get {1} {2}'
 }
-
-alias db='dy --port 8000 --region local'
-alias db-get='db-scan | xargs dy get | jq'
 
 alias db-up='docker compose -f ~/.compose/dynamodb.yaml up -d'
 alias db-down='docker compose -f ~/.compose/dynamodb.yaml down -v'
