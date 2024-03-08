@@ -21,8 +21,8 @@ class EC2:
 
             instance["__fzf_prompt__"] = (
                 f"""
-                {instance['InstanceId']: <25} => {instance['InstanceName']: <60} => {instance['State']['Name']: <16} => {instance['InstanceType']}
-            """.strip()
+                    {instance['InstanceId']: <25} => {instance['InstanceName']: <60} => {instance['State']['Name']: <16} => {instance['InstanceType']}
+                """.strip()
             )
 
         return instances

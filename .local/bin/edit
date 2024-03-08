@@ -1,17 +1,52 @@
 #!/bin/bash
 
-if [[ ${VSCODE_TERMINAL} == '' ]]; then
-  nvim -p "$@"
-  exit 0
-fi
+NEOVIM_ARGS=( "-p" )
+VSCODE_ARGS=( "--reuse-window" )
 
-code --reuse-window "$@" 2> /dev/null
+while (($# > 0)); do
+  case "$1" in
+    --wait)
+          VSCODE_ARGS+=("--wait")
+        ;;
 
-if [ $? -ne 0 ]; then
-  for socket in ls -1t /run/user/$UID/vscode-ipc-*.sock; do
-    VSCODE_IPC_HOOK_CLI=${socket} code --reuse-window "$@" 2> /dev/null
-    if [ $? -eq 0 ]; then
-      break
-    fi
-  done
+    --diff)
+          VSCODE_ARGS+=("--diff" "$2" "$3")
+          shift +2
+        ;;
+
+    --*|-*)
+          VSCODE_ARGS+=("$1")
+          NEOVIM_ARGS+=("$1")
+        ;;
+
+    *)
+
+      VSCODE_ARGS+=("$1")
+      [[ ${VSCODE_TERMINAL} != '' ]] && break
+
+      declare file line char
+      IFS=':' read -r file line char <<< "$1"
+      NEOVIM_ARGS+=( "+$line" "$file" )
+        ;;
+  esac
+  shift
+done
+
+if [[ ${VSCODE_TERMINAL} != '' ]]; then
+
+  code "${VSCODE_ARGS[@]}" 2> /dev/null
+
+  if [ $? -ne 0 ]; then
+    for socket in ls -1t /run/user/$UID/vscode-ipc-*.sock; do
+      VSCODE_IPC_HOOK_CLI=${socket} code "${VSCODE_ARGS[@]}" 2> /dev/null
+      if [ $? -eq 0 ]; then
+        break
+      fi
+    done
+  fi
+
+else
+
+  nvim "${NEOVIM_ARGS[@]}"
+
 fi
