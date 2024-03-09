@@ -5,11 +5,15 @@
   "tag-pane",
   "properties",
   "page-preview",
+  "daily-notes",
   "templates",
   "command-palette",
   "slash-command",
   "editor-status",
+  "markdown-importer",
+  "random-note",
   "outline",
   "word-count",
-  "slides"
+  "slides",
+  "workspaces"
 ]
