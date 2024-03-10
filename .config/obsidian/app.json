@@ -5,6 +5,13 @@
   "livePreview": true,
   "newFileLocation": "current",
   "newLinkFormat": "relative",
+  "pdfExportSettings": {
+    "downscalePercent": 100,
+    "includeName": true,
+    "landscape": false,
+    "margin": "0",
+    "pageSize": "Letter"
+  },
   "promptDelete": false,
   "readableLineLength": true,
   "showInlineTitle": false,

@@ -1,8 +1,8 @@
-import logging
 import sys
+import logging
 
 
-def get_default_logger(stream=sys.stdout, handlers=[]):
+def get_default_logger(stream=sys.stdout, log_level=logging.DEBUG, handlers=[]):
     stdout_handler = logging.StreamHandler(stream)
     handlers.append(stdout_handler)
 
@@ -10,7 +10,7 @@ def get_default_logger(stream=sys.stdout, handlers=[]):
         logging.getLogger(name).setLevel(logging.CRITICAL)
 
     logging.basicConfig(
-        level=logging.DEBUG,
+        level=log_level,
         format="[%(filename)s:%(lineno)d] %(asctime)s [%(levelname)s]: %(message)s",
         handlers=handlers,
     )

@@ -8,7 +8,7 @@ def prompt(
     preview_command: str = "",
     opts: List[str] = None,
     delimiter: str = "\n",
-):
+) -> List[str]:
     if opts is None:
         opts = []
 
