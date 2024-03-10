@@ -361,8 +361,8 @@ function dls() {
 }
 
 function docker-prune() {
-  docker ps -a -q     | xargs --no-run-if-empty docker rm -f
-  docker images -a -q | xargs --no-run-if-empty docker rmi -f
+  docker ps           --all --query | xargs --no-run-if-empty docker rm  --force
+  docker images       --all --query | xargs --no-run-if-empty docker rmi --force
   docker system prune --all --force --volumes
 }
 
@@ -425,7 +425,20 @@ function gsw() {
 }
 
 function gfh() {
-  REMOTE_NAME="$@"
+  local GIT_ARGS=()
+  local REMOTE_NAME=""
+
+  while (($# > 0)); do
+    case "$1" in
+      --*|-*)
+          GIT_ARGS+=("$1")
+          ;;
+      *)
+          REMOTE_NAME="$1"
+          ;;
+    esac
+    shift
+  done
 
   if [ -z $REMOTE_NAME ]; then
     REMOTE_NAME=$(git remote | fzf)
@@ -438,11 +451,11 @@ function gfh() {
   readarray -t BRANCHES <<< $(git-remote-branch-picker ${REMOTE_NAME})
 
   for BRANCH_NAME in ${BRANCHES[@]}; do
-      git fetch --update-head-ok ${REMOTE_NAME} +${BRANCH_NAME}:${BRANCH_NAME}
+      git fetch "${GIT_ARGS[@]}" --update-head-ok ${REMOTE_NAME} +${BRANCH_NAME}:${BRANCH_NAME}
   done
 
   if (( ${#BRANCHES[@]} == 1 )); then
-    git checkout ${BRANCHES[0]}
+    git checkout "${BRANCHES[@]}"
   fi
 }
 
