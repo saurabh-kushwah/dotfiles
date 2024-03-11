@@ -4,7 +4,7 @@ unalias -a
 export HISTSIZE=
 export HISTFILESIZE=
 export HISTFILE="${HOME}/.bash_history"
-export HISTTIMEFORMAT='[%F %T] '
+export HISTTIMEFORMAT='[%F %T] : '
 export HISTCONTROL='ignoredups:erasedups'
 PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
@@ -148,7 +148,7 @@ alias xargs='xargs --no-run-if-empty '
 alias sqlite='sqlite3'
 
 # 3.6.6 Here Documents
-# alias wf='cat <<- "EOF" >'
+alias wf='cat <<- "EOF" >'
 
 # Show contents of the directory after changing to it
 function cd() {
@@ -295,10 +295,19 @@ function fzf-shell-eval-widget() {
   READLINE_POINT=$((READLINE_POINT + ${#selected}))
 }
 
+function fzf-history-picker() {
+  local selected="$(history | cut -d ':' -f4 | fzf --multi)"
+
+  for item in "${selected[@]}"; do
+    eval "${item}"
+  done
+}
+
 alias fzf-file-picker='__fzf_select__'
 
 bind -m emacs-standard -x '"\ef": fzf-file-widget'
 bind -m emacs-standard -x '"\es": fzf-search-widget'
+bind -m emacs-standard -x '"\C-r": fzf-history-picker'
 bind -m emacs-standard -x '"\e`": fzf-shell-eval-widget'
 
 #--------------------------------------------------------------------------------
@@ -425,13 +434,13 @@ function gsw() {
 }
 
 function gfh() {
-  local GIT_ARGS=()
+  local GIT_FETCH_ARGS=()
   local REMOTE_NAME=""
 
   while (($# > 0)); do
     case "$1" in
       --*|-*)
-          GIT_ARGS+=("$1")
+          GIT_FETCH_ARGS+=("$1")
           ;;
       *)
           REMOTE_NAME="$1"
@@ -451,7 +460,7 @@ function gfh() {
   readarray -t BRANCHES <<< $(git-remote-branch-picker ${REMOTE_NAME})
 
   for BRANCH_NAME in ${BRANCHES[@]}; do
-      git fetch "${GIT_ARGS[@]}" --update-head-ok ${REMOTE_NAME} +${BRANCH_NAME}:${BRANCH_NAME}
+      git fetch "${GIT_FETCH_ARGS[@]}" --update-head-ok ${REMOTE_NAME} +${BRANCH_NAME}:${BRANCH_NAME}
   done
 
   if (( ${#BRANCHES[@]} == 1 )); then
