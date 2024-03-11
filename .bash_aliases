@@ -296,11 +296,9 @@ function fzf-shell-eval-widget() {
 }
 
 function fzf-history-picker() {
-  local selected="$(history | cut -d ':' -f4 | fzf --multi)"
-
-  for item in "${selected[@]}"; do
-    eval "${item}"
-  done
+  local selected="$(history | cut -d ':' -f4 | fzf --multi | tr '\n' ';')"
+  READLINE_LINE="${READLINE_LINE:0:READLINE_POINT}${selected}${READLINE_LINE:READLINE_POINT}"
+  READLINE_POINT=$((READLINE_POINT + ${#selected}))
 }
 
 alias fzf-file-picker='__fzf_select__'
