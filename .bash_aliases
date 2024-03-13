@@ -296,7 +296,7 @@ function fzf-shell-eval-widget() {
 }
 
 function fzf-history-picker() {
-  local selected="$(history | cut -d ':' -f4 | fzf --multi | tr '\n' ';')"
+  local selected="$(history | cut -d ':' -f4 | fzf --multi | tr '\n' ';' | sed 's/;\+$//')"
   READLINE_LINE="${READLINE_LINE:0:READLINE_POINT}${selected}${READLINE_LINE:READLINE_POINT}"
   READLINE_POINT=$((READLINE_POINT + ${#selected}))
 }

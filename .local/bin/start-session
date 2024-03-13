@@ -44,9 +44,9 @@ for instance in instances:
             tmux new-window \
                 -n {instance["InstanceName"]} \
                 -e AWS_PROFILE={os.environ["AWS_PROFILE"]} \
-            aws ssm start-session \
-                --target {instance["InstanceId"]} \
-                --document-name SSM-SessionManagerRunShell \
-                --region {args.region}
+                aws ssm start-session \
+                    --target {instance["InstanceId"]} \
+                    --document-name SSM-SessionManagerRunShell \
+                    --region {args.region}
         """.strip()
     )
