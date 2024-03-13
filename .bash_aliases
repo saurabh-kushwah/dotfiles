@@ -352,7 +352,7 @@ function docker-container-picker() {
 
 function drn() {
   docker images --format "{{.Repository}}:{{.Tag}}" | fzf --multi |
-    xargs -L 1 -oI '{}' tmux new-window -n '{}' docker run '{}' "${@:- '-it /bin/bash'}"
+    xargs -L 1 -oI '{}' tmux new-window -n '{}' docker run '{}' "${@}"
 }
 
 function dsh() {
