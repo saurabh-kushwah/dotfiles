@@ -368,8 +368,8 @@ function dls() {
 }
 
 function docker-prune() {
-  docker ps           --all --query | xargs --no-run-if-empty docker rm  --force
-  docker images       --all --query | xargs --no-run-if-empty docker rmi --force
+  docker ps           --all --quiet | xargs --no-run-if-empty docker rm  --force
+  docker images       --all --quiet | xargs --no-run-if-empty docker rmi --force
   docker system prune --all --force --volumes
 }
 
