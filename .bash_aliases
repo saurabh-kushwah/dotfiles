@@ -105,29 +105,6 @@ alias c='clear -x'
 alias e="edit"
 alias q='exit 0'
 
-function t() {
-  if [[ "$TERM" =~ 'tmux' ]] && [ -n "$TMUX" ]; then
-    return 0
-  fi
-
-  local TMUX_SESSION_NAME=${TERM_PROGRAM:- terminal}
-
-  if tmux has-session -t ${TMUX_SESSION_NAME} &> /dev/null; then
-    exec tmux attach-session -d -t ${TMUX_SESSION_NAME}
-  else
-    exec tmux new-session -t ${TMUX_SESSION_NAME}
-  fi
-}
-
-alias tls='tmux list-session'
-
-# tmux clear session
-function tcs() {
-  tmux list-session -F '#{session_name}' |
-    grep -v $(tmux display-message -p '#{session_name}') |
-    xargs -L 1 --no-run-if-empty tmux kill-session -t
-}
-
 # more info pstree
 alias pstree='pstree --hide-threads --show-pids'
 
@@ -162,6 +139,39 @@ function cd() {
 # create parent directory if necessary and cd
 function mkcd() {
   mkdir -pv "$1" && builtin cd "$1"
+}
+
+#--------------------------------------------------------------------------------
+
+function in-tmux() {
+  if [[ "$TERM" =~ 'tmux' ]] && [ -n "$TMUX" ]; then
+    return 0
+  fi
+
+  return 1
+}
+
+function t() {
+  if in-tmux; then
+    return 0
+  fi
+
+  local TMUX_SESSION_NAME=${TERM_PROGRAM:- terminal}
+
+  if tmux has-session -t ${TMUX_SESSION_NAME} &> /dev/null; then
+    exec tmux attach-session -d -t ${TMUX_SESSION_NAME}
+  else
+    exec tmux new-session -t ${TMUX_SESSION_NAME}
+  fi
+}
+
+alias tls='tmux list-session'
+
+# tmux clear session
+function tcs() {
+  tmux list-session -F '#{session_name}' |
+    grep -v $(tmux display-message -p '#{session_name}') |
+    xargs -L 1 --no-run-if-empty tmux kill-session -t
 }
 
 #--------------------------------------------------------------------------------
@@ -310,6 +320,8 @@ bind -m emacs-standard -x '"\e`": fzf-shell-eval-widget'
 
 #--------------------------------------------------------------------------------
 
+unset AWS_PROFILE AWS_REGION
+
 function aws-profile-picker() {
   export AWS_PROFILE=$(aws configure list-profiles | fzf)
 }
@@ -338,9 +350,14 @@ function docker-container-picker() {
     sed '1d' | fzf --multi | awk -F '=>' '{print $1}' | tr -d ' '
 }
 
+function drn() {
+  docker images --format "{{.Repository}}:{{.Tag}}" | fzf --multi |
+    xargs -L 1 -oI '{}' tmux new-window -n '{}' docker run '{}' "${@:- '-it /bin/bash'}"
+}
+
 function dsh() {
   docker-container-picker |
-    xargs -L 1 -oI '{}' docker exec -it '{}' "$@" /bin/bash
+    xargs -L 1 -oI '{}' tmux new-window -n '{}' docker exec -it '{}' "$@" /bin/bash
 }
 
 # docker logs
@@ -352,7 +369,7 @@ function dls() {
     return
   fi
 
-  if [[ "$TERM_PROGRAM" != 'tmux' ]]; then
+  if ! in-tmux; then
     docker logs --follow ${containers[@]}
     return
   fi
