@@ -306,7 +306,9 @@ function fzf-shell-eval-widget() {
 }
 
 function fzf-history-picker() {
-  local history_items="$(history | cut -d ':' -f4- | fzf --multi | tr '\n' ';' |
+  local history_items="$(history | cut -d ':' -f4- |
+    sed -e 's/;\+$//' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' |
+    fzf --multi | tr '\n' ';' |
     sed -e 's/;\+$//' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
 
   READLINE_LINE="${READLINE_LINE:0:READLINE_POINT}${history_items}${READLINE_LINE:READLINE_POINT}"
@@ -326,6 +328,7 @@ unset AWS_PROFILE AWS_REGION
 
 function aws-profile-picker() {
   export AWS_PROFILE=$(aws configure list-profiles | fzf)
+  export AWS_REGION="${@:- us-east-1}"
 }
 
 #--------------------------------------------------------------------------------
