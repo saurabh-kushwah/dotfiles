@@ -308,11 +308,11 @@ function fzf-shell-eval-widget() {
 function fzf-history-picker() {
   local history_items="$(history | cut -d ':' -f4- |
     sed -e 's/;\+$//' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' |
-    fzf --multi | tr '\n' ';' |
+    fzf --query "${READLINE_LINE:0:READLINE_POINT}" --multi | tr '\n' ';' |
     sed -e 's/;\+$//' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
 
-  READLINE_LINE="${READLINE_LINE:0:READLINE_POINT}${history_items}${READLINE_LINE:READLINE_POINT}"
-  READLINE_POINT=$((READLINE_POINT + ${#history_items}))
+  READLINE_LINE="${history_items}${READLINE_LINE:READLINE_POINT}"
+  READLINE_POINT="${#history_items}"
 }
 
 alias fzf-file-picker='__fzf_select__'
