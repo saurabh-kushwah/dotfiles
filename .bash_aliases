@@ -308,7 +308,7 @@ function fzf-shell-eval-widget() {
 function fzf-history-picker() {
   local history_items="$(history | cut -d ':' -f4- |
     sed -e 's/;\+$//' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' |
-    fzf --query "${READLINE_LINE:0:READLINE_POINT}" --multi | tr '\n' ';' |
+    fzf --query "${READLINE_LINE:0:READLINE_POINT}" --multi | tr '\n' '; ' |
     sed -e 's/;\+$//' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
 
   READLINE_LINE="${history_items}${READLINE_LINE:READLINE_POINT}"

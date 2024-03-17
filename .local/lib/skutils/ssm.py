@@ -14,6 +14,7 @@ kwargs = {
 
 
 class SSM:
+
     def __init__(self, logger, **kwargs):
         self.logger = logger
         self.client = boto3.client("ssm", **kwargs)

@@ -1,10 +1,9 @@
 import fzf
-
-import json
 import boto3
 
 
 class ECS:
+
     def __init__(self, logger, **kwargs):
         self.logger = logger
         self.client = boto3.client("ecs", **kwargs)

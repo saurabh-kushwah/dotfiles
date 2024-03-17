@@ -3,6 +3,7 @@ import boto3
 
 
 class EC2:
+
     def __init__(self, logger, **kwargs):
         self.logger = logger
         self.client = boto3.client("ec2", **kwargs)

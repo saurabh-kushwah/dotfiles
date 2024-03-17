@@ -1,0 +1,5 @@
+Extensions installed on WSL: Ubuntu:
+ms-python.black-formatter@2024.0.1
+ms-python.debugpy@2024.2.0
+ms-python.python@2024.2.1
+ms-python.vscode-pylance@2024.3.1
