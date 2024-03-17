@@ -6,21 +6,20 @@ VSCODE_ARGS=( "--reuse-window" )
 while (($# > 0)); do
   case "$1" in
     --wait)
-          VSCODE_ARGS+=("--wait")
-        ;;
+      VSCODE_ARGS+=("--wait")
+      ;;
 
     --diff)
-          VSCODE_ARGS+=("--diff" "$2" "$3")
-          shift +2
-        ;;
+      VSCODE_ARGS+=("--diff" "$2" "$3")
+      shift +2
+      ;;
 
     --*|-*)
-          VSCODE_ARGS+=("$1")
-          NEOVIM_ARGS+=("$1")
-        ;;
+      VSCODE_ARGS+=("$1")
+      NEOVIM_ARGS+=("$1")
+      ;;
 
     *)
-
       VSCODE_ARGS+=("$1")
       [[ ${VSCODE_TERMINAL} != '' ]] && break
 

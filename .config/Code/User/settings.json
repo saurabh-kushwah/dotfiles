@@ -162,6 +162,7 @@
         "type": "go"
       },
       {
+        "internalConsoleOptions": "neverOpen",
         "mode": "local",
         "name": "Go: Attach to Process",
         "processId": "${command:pickProcess}",
@@ -170,7 +171,8 @@
       },
       {
         "asRoot": true,
-        "console": "integratedTerminal",
+        "console": "internalConsole",
+        "internalConsoleOptions": "neverOpen",
         "mode": "local",
         "name": "Go: Attach to Process (Root)",
         "processId": "${command:pickProcess}",
@@ -180,6 +182,8 @@
       },
       {
         "args": [],
+        "console": "internalConsole",
+        "internalConsoleOptions": "neverOpen",
         "name": "Python: Current File",
         "program": "${file}",
         "request": "launch",
