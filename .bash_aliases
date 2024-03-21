@@ -176,16 +176,15 @@ function tcs() {
 
 #--------------------------------------------------------------------------------
 
-alias curl='curl --silent'
-
 # get server headers
 alias header='curl -I'
 
+alias ping='ping -c 5'
+
+alias curl='curl --silent'
+
 # list all open ports
 alias ports='sudo netstat -tulanp'
-
-# Stop after sending count ECHO_REQUEST packets #
-alias ping='ping -c 5'
 
 #--------------------------------------------------------------------------------
 
@@ -317,10 +316,10 @@ function fzf-history-picker() {
 
 alias fzf-file-picker='__fzf_select__'
 
-bind -m emacs-standard -x '"\ef": fzf-file-widget'
-bind -m emacs-standard -x '"\es": fzf-search-widget'
-bind -m emacs-standard -x '"\C-r": fzf-history-picker'
-bind -m emacs-standard -x '"\e`": fzf-shell-eval-widget'
+bind -m emacs-standard -x '"\ef"  : fzf-file-widget'
+bind -m emacs-standard -x '"\es"  : fzf-search-widget'
+bind -m emacs-standard -x '"\C-r" : fzf-history-picker'
+bind -m emacs-standard -x '"\e`"  : fzf-shell-eval-widget'
 
 #--------------------------------------------------------------------------------
 
@@ -534,12 +533,11 @@ fi
 
 #--------------------------------------------------------------------------------
 
-alias db-get='db-scan | xargs dy get | jq'
-
 function db-scan() {
   dy scan --keys-only "$@" | sed '1d' | fzf --preview 'dy get {1} {2}'
 }
 
+alias db-get='db-scan | xargs dy get | jq'
 alias db-up='docker compose -f ~/.compose/dynamodb.yaml up -d'
 alias db-down='docker compose -f ~/.compose/dynamodb.yaml down -v'
 
