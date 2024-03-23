@@ -1,6 +1,8 @@
 import fzf
 import boto3
 
+from datetime import timezone, datetime
+
 
 class EC2:
 
@@ -9,20 +11,37 @@ class EC2:
         self.client = boto3.client("ec2", **kwargs)
 
     def list_instances(self, **kwargs):
-        res = self.client.describe_instances(**kwargs)
-        instances = []
 
-        for reservation in res["Reservations"]:
-            instances.extend(reservation["Instances"])
+        instances = []
+        next_token = ""
+
+        while True:
+            res = self.client.describe_instances(**kwargs, NextToken=next_token)
+
+            for reservation in res["Reservations"]:
+                instances.extend(reservation["Instances"])
+
+            next_token = res.get("NextToken")
+            if not next_token:
+                break
+
+        current_time = datetime.now(timezone.utc)
 
         for instance in instances:
             for tag in instance["Tags"]:
                 if tag["Key"] == "Name":
                     instance["InstanceName"] = tag["Value"]
 
+            launch_time = instance["LaunchTime"]
+            time_difference = current_time - launch_time
+
+            days = time_difference.days
+            hours, remainder = divmod(time_difference.seconds, 3600)
+            minutes, seconds = divmod(remainder, 60)
+
             instance["__fzf_prompt__"] = (
                 f"""
-                    {instance['InstanceId']: <25} => {instance['InstanceName']: <60} => {instance['State']['Name']: <16} => {instance['InstanceType']}
+                    {instance['InstanceId']: <20} => {instance['InstanceName']: <60} => {instance['State']['Name']: <15} => {instance['InstanceType']: <10} => {days:02d}:{hours:02d}:{minutes:02d}:{seconds:02d}
                 """.strip()
             )
 

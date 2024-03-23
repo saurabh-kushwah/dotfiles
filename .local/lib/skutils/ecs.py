@@ -10,18 +10,18 @@ class ECS:
 
     def list_task_definition_families(self, family_prefix, **kwargs):
 
-        next_token = ""
         families = []
+        next_token = ""
 
         while True:
-            response = self.client.list_task_definition_families(
+            res = self.client.list_task_definition_families(
                 familyPrefix=family_prefix,
                 nextToken=next_token,
                 **kwargs,
             )
 
-            families.extend(response["families"])
-            next_token = response.get("nextToken")
+            families.extend(res["families"])
+            next_token = res.get("nextToken")
 
             if not next_token:
                 break
@@ -34,14 +34,14 @@ class ECS:
         task_definition_arns = []
 
         while True:
-            response = self.client.list_task_definitions(
+            res = self.client.list_task_definitions(
                 familyPrefix=family_prefix,
                 nextToken=next_token,
                 **kwargs,
             )
 
-            task_definition_arns.extend(response["taskDefinitionArns"])
-            next_token = response.get("nextToken")
+            task_definition_arns.extend(res["taskDefinitionArns"])
+            next_token = res.get("nextToken")
 
             if not next_token:
                 break
